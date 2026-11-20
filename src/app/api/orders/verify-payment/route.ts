@@ -53,11 +53,10 @@ export async function POST(req: NextRequest) {
         }
       }
 
-      try {
-        await sendOrderConfirmationEmail(updated);
-      } catch (e) {
+      // Asynchronous email dispatch (instant payment verification response)
+      sendOrderConfirmationEmail(updated).catch((e) => {
         console.error("Order paid email error:", e);
-      }
+      });
     }
 
     return NextResponse.json({ order: updated });

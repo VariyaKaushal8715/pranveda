@@ -397,7 +397,8 @@ export default function ProductDetailPage() {
                             ? product.packSize
                             : `${selectedCourse} × ${product.packSize}`,
                       },
-                      selectedCourse * quantity
+                      selectedCourse * quantity,
+                      true
                     );
                   }}
                   className="py-3.5 px-4 rounded-full bg-forest text-cream text-xs sm:text-sm font-semibold hover:bg-forest-light disabled:opacity-40 transition flex items-center justify-center gap-2 shadow-md cursor-pointer"
@@ -425,7 +426,8 @@ export default function ProductDetailPage() {
                             ? product.packSize
                             : `${selectedCourse} × ${product.packSize}`,
                       },
-                      selectedCourse * quantity
+                      selectedCourse * quantity,
+                      false
                     );
                     router.push("/checkout");
                   }}

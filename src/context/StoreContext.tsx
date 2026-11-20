@@ -15,7 +15,7 @@ interface StoreContextValue {
   cartSubtotal: number;
   cartOpen: boolean;
   setCartOpen: (open: boolean) => void;
-  addToCart: (product: Product, quantity?: number) => void;
+  addToCart: (product: Product, quantity?: number, openDrawer?: boolean) => void;
   updateCartQty: (productId: string, quantity: number) => void;
   removeFromCart: (productId: string) => void;
   clearCart: () => void;
@@ -131,12 +131,16 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   useEffect(() => {
-    refreshUser();
-    refreshSettings();
+    // Non-blocking background session refresh
+    const timer = setTimeout(() => {
+      refreshUser();
+      refreshSettings();
+    }, 60);
+    return () => clearTimeout(timer);
   }, [refreshUser, refreshSettings]);
 
   const addToCart = useCallback(
-    (product: Product, quantity = 1) => {
+    (product: Product, quantity = 1, openDrawer = true) => {
       if (product.stock <= 0) {
         showToast("This formulation is currently out of stock.", "error");
         return;
@@ -164,7 +168,9 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
           },
         ];
       });
-      setCartOpen(true);
+      if (openDrawer) {
+        setCartOpen(true);
+      }
       showToast(`Added ${product.name} to your bag`, "success");
     },
     [showToast]

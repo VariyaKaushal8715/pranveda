@@ -212,7 +212,7 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    // For COD: decrement stock & send confirmation email immediately
+    // For COD: decrement stock & send confirmation email in background without blocking response
     if (paymentMethod === "COD") {
       for (const item of validatedItems) {
         await prisma.product.update({
@@ -221,11 +221,10 @@ export async function POST(req: NextRequest) {
         });
       }
 
-      try {
-        await sendOrderConfirmationEmail(order);
-      } catch (e) {
+      // Asynchronous email dispatch (instant checkout response for customer)
+      sendOrderConfirmationEmail(order).catch((e) => {
         console.error("Order email error:", e);
-      }
+      });
     }
 
     return NextResponse.json(
