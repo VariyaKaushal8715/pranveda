@@ -43,8 +43,9 @@ export async function POST(req: NextRequest) {
         pincode: user.pincode,
       },
     });
-  } catch (err) {
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : String(err);
     console.error("Login error:", err);
-    return NextResponse.json({ error: "Login failed." }, { status: 500 });
+    return NextResponse.json({ error: "Login failed.", details: message }, { status: 500 });
   }
 }

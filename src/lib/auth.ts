@@ -5,7 +5,10 @@ import { prisma } from "./db";
 const COOKIE_NAME = "pranveda_session";
 
 function getSecret() {
-  const secret = process.env.JWT_SECRET || "pranveda-fallback-dev-secret-2026";
+  let secret = process.env.JWT_SECRET || "pranveda-fallback-dev-secret-2026-ayurveda";
+  if (secret.length < 32) {
+    secret = secret.padEnd(32, "-pranveda-fixed-key-padding-2026");
+  }
   return new TextEncoder().encode(secret);
 }
 
