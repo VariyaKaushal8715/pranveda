@@ -116,16 +116,6 @@ export function Navbar() {
 
           {/* Right: Compact Mobile Icons + Full Desktop Icons */}
           <div className="flex items-center gap-1 sm:gap-2 shrink-0">
-            {user?.role === "ADMIN" && (
-              <Link
-                href="/admin"
-                className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gold/15 text-forest border border-gold/40 text-xs font-semibold hover:bg-gold/25 transition"
-              >
-                <ShieldCheck className="w-3.5 h-3.5 text-gold" />
-                Admin
-              </Link>
-            )}
-
             <button
               onClick={() => {
                 setSearchOpen(!searchOpen);

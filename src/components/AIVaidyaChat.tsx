@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import {
   Sparkles,
   X,
@@ -44,8 +45,11 @@ const INITIAL_PROMPTS = [
 ];
 
 export function AIVaidyaChat() {
+  const pathname = usePathname();
   const { addToCart, showToast } = useStore();
   const [isOpen, setIsOpen] = useState(false);
+
+  if (pathname?.startsWith("/admin")) return null;
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([
@@ -153,32 +157,32 @@ What health concern or question may I help you with today?`,
 
   return (
     <>
-      {/* Floating Toggle Button */}
+      {/* Floating Toggle Button (Right Side Dock) */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-4 left-4 sm:bottom-6 sm:left-6 z-40 group flex items-center gap-2.5 bg-forest text-cream pl-3.5 pr-4 sm:pl-4 sm:pr-5 py-3 rounded-full shadow-2xl hover:bg-forest-light hover:scale-105 transition-all border border-gold/40 cursor-pointer"
+        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 group flex items-center gap-2 bg-forest text-cream pl-3 pr-3.5 sm:pl-3.5 sm:pr-4 py-2 sm:py-2.5 rounded-full shadow-2xl hover:bg-forest-light hover:scale-105 transition-all border border-gold/45 cursor-pointer backdrop-blur-xs"
         aria-label="Open Ayurvedic AI Vaidya"
       >
         <div className="relative">
-          <div className="w-6 h-6 rounded-full bg-gold/20 flex items-center justify-center text-gold">
-            <Sparkles className="w-3.5 h-3.5" />
+          <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-gold/20 flex items-center justify-center text-gold">
+            <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
           </div>
-          <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-[#1F6E43] animate-ping" />
-          <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-[#1F6E43]" />
+          <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
+          <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-400" />
         </div>
         <div className="text-left">
-          <div className="text-xs font-bold tracking-wide text-cream flex items-center gap-1.5">
-            AI Vaidya <span className="text-[9px] px-1.5 py-0.2 rounded-full bg-gold text-forest font-extrabold uppercase">Live</span>
+          <div className="text-[11px] sm:text-xs font-bold tracking-wide text-cream flex items-center gap-1 sm:gap-1.5">
+            AI Vaidya <span className="text-[8px] sm:text-[9px] px-1.5 py-0.2 rounded-full bg-gold text-forest font-extrabold uppercase">Live</span>
           </div>
-          <div className="text-[10px] text-gold font-medium leading-none hidden sm:block">
+          <div className="text-[9px] sm:text-[10px] text-gold font-medium leading-none hidden sm:block">
             Ayurvedic Consultation
           </div>
         </div>
       </button>
 
-      {/* Slide-out Consultation Window */}
+      {/* Slide-out Consultation Window (Aligned to Right) */}
       {isOpen && (
-        <div className="fixed inset-0 sm:inset-auto sm:bottom-20 sm:left-6 sm:w-[420px] sm:h-[620px] z-50 bg-white sm:rounded-3xl shadow-2xl border border-sand flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-300">
+        <div className="fixed inset-0 sm:inset-auto sm:bottom-20 sm:right-6 sm:w-[420px] sm:h-[620px] z-50 bg-white sm:rounded-3xl shadow-2xl border border-sand flex flex-col overflow-hidden animate-in fade-in slide-in-from-bottom-4 duration-300">
           {/* Header */}
           <div className="bg-forest text-cream px-5 py-4 border-b border-gold/30 flex items-center justify-between shrink-0">
             <div className="flex items-center gap-2.5">
