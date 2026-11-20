@@ -45,11 +45,8 @@ const INITIAL_PROMPTS = [
 ];
 
 export function AIVaidyaChat() {
-  const pathname = usePathname();
   const { addToCart, showToast } = useStore();
   const [isOpen, setIsOpen] = useState(false);
-
-  if (pathname?.startsWith("/admin")) return null;
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([
