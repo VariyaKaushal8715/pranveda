@@ -1,0 +1,68 @@
+import { NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/lib/db";
+import { verifyRazorpaySignature } from "@/lib/razorpay";
+import { sendOrderConfirmationEmail } from "@/lib/email";
+
+export async function POST(req: NextRequest) {
+  try {
+    const body = await req.json();
+    const orderId = String(body.orderId || "");
+    const razorpayOrderId = String(body.razorpayOrderId || "");
+    const razorpayPaymentId = String(body.razorpayPaymentId || "");
+    const razorpaySignature = String(body.razorpaySignature || "");
+
+    if (!orderId || !razorpayOrderId || !razorpayPaymentId || !razorpaySignature) {
+      return NextResponse.json({ error: "Missing payment verification fields." }, { status: 400 });
+    }
+
+    const order = await prisma.order.findUnique({
+      where: { id: orderId },
+      include: { items: true },
+    });
+
+    if (!order) {
+      return NextResponse.json({ error: "Order not found." }, { status: 404 });
+    }
+
+    const valid = verifyRazorpaySignature(razorpayOrderId, razorpayPaymentId, razorpaySignature);
+    if (!valid) {
+      await prisma.order.update({
+        where: { id: order.id },
+        data: { paymentStatus: "FAILED" },
+      });
+      return NextResponse.json({ error: "Payment signature verification failed." }, { status: 400 });
+    }
+
+    const alreadyPaid = order.paymentStatus === "PAID";
+    const updated = await prisma.order.update({
+      where: { id: order.id },
+      data: {
+        paymentStatus: "PAID",
+        razorpayPaymentId,
+      },
+      include: { items: true },
+    });
+
+    if (!alreadyPaid) {
+      for (const item of updated.items) {
+        if (item.productId) {
+          await prisma.product.update({
+            where: { id: item.productId },
+            data: { stock: { decrement: item.quantity } },
+          });
+        }
+      }
+
+      try {
+        await sendOrderConfirmationEmail(updated);
+      } catch (e) {
+        console.error("Order paid email error:", e);
+      }
+    }
+
+    return NextResponse.json({ order: updated });
+  } catch (err) {
+    console.error("POST /api/orders/verify-payment error:", err);
+    return NextResponse.json({ error: "Payment verification failed." }, { status: 500 });
+  }
+}

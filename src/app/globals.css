@@ -1,0 +1,72 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-cream: #FAF6F0;
+  --color-linen: #F2EAE0;
+  --color-sand: #E6DAC8;
+  --color-forest: #1B3B2B;
+  --color-forest-light: #28533D;
+  --color-gold: #C89B3C;
+  --color-gold-light: #E8D5A7;
+  --color-terracotta: #A85A3A;
+  --color-ink: #1E2421;
+  --color-muted: #5F6B64;
+
+  --font-serif: var(--font-playfair), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-jakarta), system-ui, -apple-system, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+}
+
+body {
+  background-color: #FAF6F0;
+  color: #1E2421;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Hide scrollbars cleanly for horizontal pill carousels on mobile */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.font-serif {
+  font-family: var(--font-serif);
+}
+
+/* Marquee animation */
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 35s linear infinite;
+}
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #F2EAE0;
+}
+::-webkit-scrollbar-thumb {
+  background: #C9BDA9;
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #1B3B2B;
+}

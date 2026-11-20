@@ -1,0 +1,14 @@
+node_modules/
+.next/
+out/
+.env
+.env*.local
+prisma/dev.db
+prisma/dev.db-journal
+uploads/
+*.log
+*.zip
+*.pdf
+*.tsbuildinfo
+ilovepdf_pages-to-jpg/
+stitch_web_ui_application_dashboard/
