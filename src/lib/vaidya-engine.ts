@@ -23,15 +23,103 @@ export async function getVaidyaAdvice(
   const query = userQuery.trim();
   const queryLower = query.toLowerCase();
 
-  // Load live active catalog
-  const products = await prisma.product.findMany({
-    where: { isActive: true },
-    include: { category: true },
-  });
+  // Load live active catalog with graceful fallback
+  let products: any[] = [];
+  try {
+    products = await prisma.product.findMany({
+      where: { isActive: true },
+      include: { category: true },
+    });
+  } catch (err) {
+    console.warn("Could not load products from prisma for AI Vaidya, using fallback catalog:", err);
+  }
+
+  const FALLBACK_CATALOG: Record<string, any> = {
+    ashwagandha: {
+      id: "prod-ashwa",
+      slug: "ksm-66-ashwagandha",
+      name: "KSM-66 Ashwagandha Root",
+      subtitle: "Restorative sleep, stress resilience & adrenal recharge",
+      price: 799,
+      image: "/images/ashwagandha.jpg",
+      packSize: "60 Veg Capsules",
+      doshaTag: "Vata Shaman (વાત શામક)",
+    },
+    triphala: {
+      id: "prod-triphala",
+      slug: "organic-triphala-churna",
+      name: "Organic Triphala Churna",
+      subtitle: "Nightly gut detox, gentle colon cleanse & Agni balance",
+      price: 349,
+      image: "/images/triphala.jpg",
+      packSize: "200g Glass Jar",
+      doshaTag: "Tridoshic Balance (ત્રિદોષ શામક)",
+    },
+    chyawanprash: {
+      id: "prod-chyawanprash",
+      slug: "royal-saffron-chyawanprash",
+      name: "Royal Saffron Chyawanprash",
+      subtitle: "52 Wildcrafted herbs, Kashmiri Saffron & Organic Amla",
+      price: 949,
+      image: "/images/chyawanprash.jpg",
+      packSize: "500g Amber Jar",
+      doshaTag: "Rasayana & Ojas (રસાયન અને ઓજસ)",
+    },
+    kumkumadi: {
+      id: "prod-kumkumadi",
+      slug: "kumkumadi-tailam",
+      name: "Kumkumadi Miraculous Facial Oil",
+      subtitle: "100% Pure saffron, sandalwood & goat milk beauty nectar",
+      price: 1499,
+      image: "/images/kumkumadi.jpg",
+      packSize: "30ml Dropper Bottle",
+      doshaTag: "Pitta Pacifying (પિત્ત શામક)",
+    },
+    bhringraj: {
+      id: "prod-bhringraj",
+      slug: "bhringraj-hair-oil",
+      name: "Bhringraj & Amla Hair Therapy Oil",
+      subtitle: "Intense root nourishment, scalp cooling & hair fall defense",
+      price: 599,
+      image: "/images/bhringraj.jpg",
+      packSize: "200ml Glass Bottle",
+      doshaTag: "Pitta & Kapha Care (વાળ સંભાળ)",
+    },
+    shilajit: {
+      id: "prod-shilajit",
+      slug: "pure-himalayan-shilajit",
+      name: "Pure Himalayan Shilajit Resin",
+      subtitle: "Purified gold-grade mineral pitch with 75%+ fulvic acid",
+      price: 1299,
+      image: "/images/shilajit.jpg",
+      packSize: "20g Jar with Brass Spoon",
+      doshaTag: "Dhatu Rasayana (ધાતુ રસાયન)",
+    },
+    tulsi: {
+      id: "prod-tulsi",
+      slug: "holy-tulsi-drops",
+      name: "Holy Tulsi Drops (Panch Tulsi)",
+      subtitle: "Concentrated 5-tulsi extract for respiratory immunity",
+      price: 299,
+      image: "/images/tulsi.jpg",
+      packSize: "30ml Dropper Bottle",
+      doshaTag: "Kapha & Vata (કફ શામક)",
+    },
+    brahmi: {
+      id: "prod-brahmi",
+      slug: "brahmi-clarity-capsules",
+      name: "Brahmi Memory & Focus Capsules",
+      subtitle: "Cognitive calm, neural vitality & sharpened memory",
+      price: 699,
+      image: "/images/brahmi.jpg",
+      packSize: "60 Veg Capsules",
+      doshaTag: "Medhya Rasayana (મેધ્ય રસાયન)",
+    },
+  };
 
   const getProduct = (slugSub: string) => {
     const found = products.find((p) => p.slug.includes(slugSub));
-    if (!found) return null;
+    if (!found) return FALLBACK_CATALOG[slugSub] || null;
     const imgs = parseJsonArray<string>(found.images);
     return {
       id: found.id,
