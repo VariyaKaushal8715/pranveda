@@ -22,7 +22,9 @@ import { MarqueeTicker } from "@/components/MarqueeTicker";
 import { ReviewsShowcase } from "@/components/ReviewsShowcase";
 import type { Product } from "@/types/store";
 
-export const dynamic = "force-dynamic";
+// ISR Edge Caching: Deliver blazing-fast sub-50ms TTFB from Mumbai/India Edge CDN.
+// Automatically revalidates in the background every 60s.
+export const revalidate = 60;
 
 const CONCERN_ICONS: Record<string, React.ReactNode> = {
   Immunity: <ShieldCheck className="w-6 h-6" />,
@@ -121,10 +123,12 @@ export default async function HomePage() {
       {/* HERO SECTION */}
       <section className="relative overflow-hidden border-b border-sand">
         <div className="relative min-h-[470px] sm:min-h-[560px] lg:min-h-[640px] flex items-center">
-          {/* Background image */}
+          {/* Background image (fetchPriority high for immediate mobile paint) */}
           <img
             src="/images/hero-banner.jpg"
             alt="PranVeda Ayurvedic Apothecary"
+            fetchPriority="high"
+            decoding="async"
             className="absolute inset-0 w-full h-full object-cover object-center"
           />
           {/* Mobile-safe & Desktop-editorial gradient */}
@@ -301,6 +305,8 @@ export default async function HomePage() {
                 <img
                   src="/images/ayurveda-story.jpg"
                   alt="Artisanal Ayurvedic Herbal Preparation"
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover"
                 />
               </div>

@@ -35,6 +35,8 @@ export function ProductCard({ product }: { product: Product }) {
           <img
             src={product.images[0] || "/images/ashwagandha.jpg"}
             alt={product.name}
+            loading="lazy"
+            decoding="async"
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           />
         </Link>

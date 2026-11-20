@@ -238,6 +238,8 @@ export function ReviewsShowcase({ initialReviews }: { initialReviews: ReviewItem
                     <img
                       src={rev.product.image}
                       alt={rev.product.name}
+                      loading="lazy"
+                      decoding="async"
                       className="w-10 h-10 rounded-lg object-cover border border-sand shrink-0 group-hover:scale-105 transition"
                     />
                     <div className="flex-1 min-w-0">
