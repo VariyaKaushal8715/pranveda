@@ -178,24 +178,23 @@ CRITICAL BEHAVIOR RULES:
    - If the user writes in Gujarati (e.g. "મને પેટમાં બળતરા થાય છે", "ઊંઘ નથી આવતી") or Gujlish ("mane pet ma gas thay che", "ungh nathi aavti"), YOU MUST RESPOND IN NATURAL, FLUENT, RESPECTFUL GUJARATI.
    - If the user writes in Hindi or Hinglish, respond in warm, natural Hindi.
    - If the user writes in English, respond in English.
-2. EMPATHETIC CONSULTATION FIRST, NO AGGRESSIVE SALES:
-   - Truly listen to the patient's complaint. Acknowledge their suffering with warmth and validation.
+2. EMPATHETIC CONSULTATION & DIRECT PRANVEDA PRODUCT REMEDY:
+   - Truly listen to the patient's complaint. Acknowledge their suffering with warmth, respect, and clinical validation.
    - Explain the root cause according to classical Ayurveda: Vata (વાત), Pitta (પિત્ત), or Kapha (કફ), Agni (જઠરાગ્નિ), or Ama (ટોક્સિન્સ/આમ).
-   - Provide 2–3 actionable home remedies from the Indian kitchen (Ahara) and lifestyle rituals (Dinacharya), such as warm water, ginger, cumin, nutmeg, foot massage (Padabhyanga), or sleep hygiene.
-   - Ask 1 gentle diagnostic follow-up question to understand their routine, diet, or symptom duration.
-3. AUTHENTIC FORMULATIONS:
-   - Only recommend PranVeda formulations when genuinely appropriate to treat the diagnosed dosha.
-   - Available PranVeda Formulations:
-     * KSM-66 Ashwagandha Root Capsules (Stress, anxiety, restorative sleep, Vata calming)
-     * Pure Himalayan Shilajit Resin (Cellular vitality, stamina, recovery, Ojas building)
-     * Organic Triphala Churna (Digestion, constipation, overnight gut detox, gas, Mandagni)
-     * Kumkumadi Miraculous Facial Oil (Skin glow, blemishes, dark spots, Pitta soothing)
-     * Bhringraj & Amla Hair Oil (Hair fall, scalp heat, root nourishment, Kshirapaka)
-     * Royal Saffron Chyawanprash (Daily immunity, lung strength, whole-family vitality)
-     * Brahmi & Shankhpushpi Mind Elixir (Mental focus, brain calm, tranquility, memory)
-     * Panch Tulsi Ark Drops (Seasonal immunity, throat soothing, antioxidant drops)
-   - When suggesting a product, explain HOW and WHEN to take it (e.g., with warm milk, before bedtime, on empty stomach).
-4. TONE: Warm, dignified, respectful, serene, and deeply healing. Use clean markdown formatting with bullet points.`;
+   - CRITICAL REQUIREMENT: THE DEFINITIVE REMEDY / SOLUTION MUST BE PRANVEDA'S OWN AUTHENTIC PRODUCT (NOT kitchen tricks or domestic home recipes).
+   - Prescribe PranVeda's exact Ayurvedic formulation as the targeted medicinal cure for their condition.
+   - Detail the dosage, timing, and anupana (how and when to take it, e.g. 1 capsule with warm milk at bedtime, 1 spoon with warm water, etc., and recommended 21-45 days course).
+   - Ask 1 gentle diagnostic follow-up question to understand their symptom history or duration.
+3. AVAILABLE PRANVEDA FORMULATIONS (OUR PRODUCTS):
+   * KSM-66 Ashwagandha Root Capsules: Best for stress, anxiety, restlessness, insomnia, nervous exhaustion, Vata pacification.
+   * Pure Himalayan Shilajit Resin (16,000ft): Best for fatigue, weakness, lack of stamina, low energy, cellular recovery, Ojas building.
+   * Organic Triphala Churna: Best for digestion, acidity, bloating, constipation, sluggish gut, Mandagni, and toxic waste (Ama) detox.
+   * Kumkumadi Miraculous Facial Oil: Best for dull skin, dark spots, blemishes, pigmentation, sunburn, Pitta skin balance.
+   * Bhringraj & Amla Hair Therapy Oil: Best for hair fall, premature thinning, dandruff, scalp heat, root nourishment.
+   * Royal Saffron Chyawanprash: Best for daily immunity, respiratory strength, seasonal cough/cold, family vitality.
+   * Brahmi Memory & Focus Capsules: Best for mental focus, memory retention, concentration, brain calmness.
+   * Holy Tulsi Drops (Panch Tulsi): Best for seasonal immunity, sore throat, respiratory clearing.
+4. TONE: Warm, dignified, respectful, serene, and deeply healing. Use clean markdown formatting with bold headers and bullet points.`;
 
   // Format history for Gemini contents
   const contents = history.slice(-6).map((h) => ({
@@ -304,18 +303,18 @@ function runClinicalHeuristicEngine(
       return {
         message: `🌿 **નમસ્તે! હું તમારો પ્રાણવેદ (PranVeda) આયુર્વેદિક વૈદ્ય છું.**
 
-આયુર્વેદમાં દરેક વ્યક્તિનું સ્વાસ્થ્ય એના ત્રણ દોષો — **વાત (Vata), પિત્ત (Pitta), અને કફ (Kapha)** ના સંતુલન પર નિર્ભર કરે છે. 
+આયુર્વેદ અનુસાર સાચો ઇલાજ ત્યારે જ થાય જ્યારે રોગના મૂળ દોષ — **વાત (Vata), પિત્ત (Pitta), કે કફ (Kapha)** નું સાચું નિદાન થાય.
 
-હું કોઈ સામાન્ય રોબોટ નથી જે સીધી પ્રોડક્ટ્સ વેચવા બેસે. હું તમારા લક્ષણોને મૂળમાંથી સમજીને સાચો ઉપાય આપવા માંગુ છું.
+હું તમારી સમસ્યાને ધ્યાનથી સાંભળીને, શાસ્ત્રોક્ત કારણ સમજાવીને તેના માટેનું અમારું **સૌથી સચોટ આયુર્વેદિક ઔષધ (PranVeda Formulation)** અને તેની સેવન વિધિ જણાવીશ.
 
-તમને હાલમાં કઈ તકલીફ થઈ રહી છે?
-• **ઊંઘ ન આવવી, સ્ટ્રેસ કે ચિંતા?**
-• **ગેસ, એસિડિટી, અપચો કે પેટ સાફ ન થવું?**
-• **વાળ ખરવા કે માથામાં ગરમી?**
-• **ચહેરા પર ડાઘ, ખીલ કે ગ્લોનો અભાવ?**
-• **શરીરમાં થાક, અશક્તિ કે નબળાઈ?**
+તમને હાલમાં કઈ સમસ્યા સતાવી રહી છે?
+• **રાત્રે ઊંઘ ન આવવી, સ્ટ્રેસ કે ચિંતા?**
+• **પેટમાં ગેસ, એસિડિટી, બળતરા કે કબજિયાત?**
+• **વાળ ખરવા, પાતળા થવા કે ખોડો?**
+• **ચહેરા પર કાળા ડાઘ, ખીલ કે ગ્લોનો અભાવ?**
+• **શરીરમાં કમજોરી, થાક કે સ્ટેમિનાની કમી?**
 
-તમારી સમસ્યા મને ખુલીને જણાવો, હું તમને ઘરગથ્થુ આહાર, નિયમો અને વૈદિક માર્ગદર્શન આપીશ.`,
+તમારી સમસ્યા મને જણાવો, હું તેનું શ્રેષ્ઠ આયુર્વેદિક સમાધાન આપીશ.`,
         suggestedProducts: [],
         followUps: [
           "મને રાત્રે ઊંઘ નથી આવતી અને મગજમાં વિચારો ચાલે છે",
@@ -328,32 +327,39 @@ function runClinicalHeuristicEngine(
 
     if (isHindi) {
       return {
-        message: `🌿 **नमस्ते! मैं आपका प्राणवेद (PranVeda) आयुर्वेदिक वैद्य हूँ।**
+        message: `🌿 **नमस्ते! मैं आपका प्राणवेद (PranVeda) मुख्य आयुर्वेदिक वैद्य हूँ।**
 
-आयुर्वेद के अनुसार सच्चा स्वास्थ्य आपके त्रिदोष — **वात, पित्त और कफ** के संतुलन से आता है। मैं आपकी समस्या को सुनकर उसकी जड़ को समझने और सही खान-पान व घरेलू उपचार बताने के लिए यहाँ हूँ।
+आयुर्वेद के अनुसार हर शारीरिक समस्या का मूल आपके त्रिदोष — **वात, पित्त और कफ** के असंतुलन में होता है। मैं आपकी समस्या को विस्तार से समझकर उसके स्थायी उपचार हेतु हमारी सर्वोत्तम **प्राणवेद औषधियां (PranVeda Formulations)** और सेवन विधि बताऊंगा।
 
-कृपया खुलकर बताएं कि आपको क्या स्वास्थ्य समस्या हो रही है? (जैसे: नींद न आना, तनाव, गैस-एसिडिटी, बालों का झड़ना, या कमजोरी?)`,
+कृपया बताएं आप किस स्वास्थ्य समस्या का समाधान चाहते हैं?
+• **नींद न आना, तनाव या बेचैनी?**
+• **गैस, एसिडिटी, कब्ज या पाचन की कमजोरी?**
+• **बालों का अत्यधिक झड़ना या डैंड्रफ?**
+• **चेहरे पर दाग-धब्बे, झाइयां या चमक की कमी?**
+• **दिनभर थकान, कमजोरी या स्टेमिना की कमी?**`,
         suggestedProducts: [],
         followUps: [
           "मुझे रात को नींद नहीं आती और बेचैनी रहती है",
           "पेट में जलन और गैस की समस्या रहती है",
           "बाल बहुत झड़ रहे हैं, सही उपाय बताएं",
+          "शरीर में कमजोरी और थकान रहती है",
         ],
       };
     }
 
     return {
-      message: `🌿 **Namaste! I am your PranVeda Ayurvedic Vaidya.**
+      message: `🌿 **Namaste! I am your PranVeda Chief Ayurvedic Vaidya.**
 
-In classical Ayurveda, true healing begins by understanding the root cause of your Dosha imbalance (**Vata, Pitta, and Kapha**) and your daily routine (*Dinacharya*).
+In classical Ayurveda, true healing occurs when we identify and rebalance the aggravated Dosha (**Vata, Pitta, or Kapha**) causing your symptoms. 
 
-I am not here to simply push products. I am here to listen to your health challenges and offer authentic dietary rituals, kitchen remedies, and herbal wisdom.
+I am here to carefully assess your health concern and prescribe our authentic, lab-tested **PranVeda Ayurvedic Formulations** tailored specifically for your body.
 
-Tell me openly:
-• What specific health concern are you experiencing right now?
-• (e.g. disturbed sleep, high stress, acidity, indigestion, hair loss, skin dullness, or fatigue)
-
-How may I guide your holistic healing journey today?`,
+What health concern are you experiencing today?
+• **Restless sleep, anxiety, or racing thoughts?**
+• **Acidity, chronic gas, bloating, or irregular gut?**
+• **Hair fall, thinning, or scalp inflammation?**
+• **Dark spots, blemishes, or dull complexion?**
+• **Low energy, chronic fatigue, or depleted stamina?**`,
       suggestedProducts: [],
       followUps: [
         "I suffer from disturbed sleep & evening stress",
@@ -374,22 +380,23 @@ How may I guide your holistic healing journey today?`,
       return {
         message: `🌿 **આયુર્વેદિક નિદાન: વાત દોષ પ્રકોપ (Vata Aggravation)**
 
-તમારી વાત હું બરાબર સમજી ગયો. આયુર્વેદ મુજબ જ્યારે શરીરમાં **વાત દોષ (વાયુ અને આકાશ તત્વ)** વધી જાય છે, ત્યારે મગજની ચેતાતંત્ર (Nervous system) શાંત થઈ શકતી નથી. પરિણામે પથારીમાં પડ્યા પછી પણ મનમાં સતત વિચારો ચાલ્યા કરે છે અને ઊંડી ઊંઘ નથી આવતી.
+તમારી તકલીફ હું બરાબર સમજી ગયો. આયુર્વેદ મુજબ જ્યારે શરીરમાં **વાત દોષ (વાયુ અને આકાશ તત્વ)** વધી જાય છે, ત્યારે મગજની ચેતાતંત્ર (Nervous system) અતિશય ઉત્તેજિત રહે છે. પરિણામે પથારીમાં પડ્યા પછી પણ મનમાં સતત વિચારો ચાલ્યા કરે છે અને ઊંડી ઊંઘ નથી આવતી.
 
-### 🍵 ઘરગથ્થુ ઉપાય & આહાર નિયમો (Home Remedies):
-1. **પાદાભ્યાંગ (પગના તળિયે તેલ માલિશ):** રાત્રે સૂતા પહેલાં ૫ મિનિટ તમારા બંને પગના તળિયે હૂંફાળા તલના તેલ અથવા કોપરેલથી હળવી માલિશ કરો. આનાથી વાત દોષ તરત જ જમીન પર બેસી જાય છે અને મગજ શાંત થાય છે.
-2. **જાયફળ વાળું દૂધ:** રાત્રે સૂવાના ૩૦ મિનિટ પહેલાં એક કપ હૂંફાળા દૂધમાં એક ચપટી જાયફળ પાઉડર અને થોડી હળદર નાખીને પીવો. આ પ્રાકૃતિક ઊંઘ લાવવા માટે રામબાણ છે.
-3. **મોબાઈલ સ્ક્રીન બંધ કરો:** સૂવાના ૪૫ મિનિટ પહેલાં ફોન કે ટીવી જોવાનું બંધ કરો, કારણ કે બ્લુ લાઈટ મગજને ઉત્તેજિત રાખે છે.
+### 🌿 શ્રેષ્ઠ આયુર્વેદિક ઉપચાર: **પ્રાણવેદ KSM-66 અશ્વગંધા રૂટ કેપ્સ્યુલ્સ**
+આ સમસ્યાના કાયમી અને મૂળમાંથી ઉપચાર માટે અમારું **KSM-66 અશ્વગંધા** સર્વોત્તમ શાસ્ત્રોક્ત ઔષધ છે.
+• **કેમ અસરકારક છે:** આ કોઈ ઊંઘની કેમિકલ દવા નથી. એ ૧૦૦% ઓર્ગેનિક એડપ્ટોજેન છે, જે શરીરમાં રાત્રે વધેલા સ્ટ્રેસ હોર્મોન (કોર્ટિસોલ) ને કુદરતી રીતે ઘટાડીને મગજને શાંત કરે છે અને કોઈ પણ આદત પડ્યા વગર ગહેરી પ્રાકૃતિક ઊંઘ (Deep REM Sleep) પાછી લાવે છે.
 
-### 🌿 આયુર્વેદિક જડીબુટ્ટી માર્ગદર્શન:
-જો તમારી ઊંઘની સમસ્યા જૂની હોય, તો **KSM-66 અશ્વગંધા** અને **બ્રાહ્મી** તમારી ચેતાતંત્રને પુનર્જીવિત કરે છે. અશ્વગંધા રાત્રે કોર્ટિસોલ (સ્ટ્રેસ હોર્મોન) ઘટાડે છે અને કુદરતી ડીપ REM સ્લીપ પાછી લાવે છે (કોઈપણ આદત પડ્યા વગર).
+### 🍵 સેવન વિધિ & નિયમો (How to Take):
+• **ડોઝ:** દરરોજ રાત્રે સૂવાના ૪૫ મિનિટ પહેલાં ૧ કેપ્સ્યુલ લો.
+• **અનુપાન (With What):** ૧ કપ હૂંફાળા દૂધ સાથે (અથવા હૂંફાળા પાણી સાથે).
+• **કોર્સ:** ૨૧ થી ૪૫ દિવસનો નિયમિત કોર્સ કરવાથી વાત દોષ સંપૂર્ણ શાંત થઈ જાય છે અને મન સ્થિર બને છે.
 
-**પ્રશ્ન:** શું તમને આ સમસ્યા કેટલા સમયથી છે, અને શું સાથે માથાનો દુખાવો કે પેટમાં કબજિયાત પણ રહે છે?`,
+**પ્રશ્ન:** શું તમને આ સમસ્યા કેટલા સમયથી છે, અને શું સાથે માથાનો દુખાવો કે અસ્વસ્થતા પણ રહે છે?`,
         suggestedProducts: catalog.ashwagandha ? [catalog.ashwagandha] : [],
         followUps: [
           "અશ્વગંધા રાત્રે દૂધ સાથે કેવી રીતે લેવી?",
           "આ ઉપાયનું પરિણામ કેટલા દિવસમાં દેખાશે?",
-          "વાત દોષ ઘટાડવા માટે શું ન ખાવું જોઈએ?",
+          "શું અશ્વગંધાની કોઈ આદત પડે ખરી?",
         ],
       };
     }
@@ -400,10 +407,14 @@ How may I guide your holistic healing journey today?`,
 
 आपकी समस्या को मैंने ध्यान से समझा। आयुर्वेद के अनुसार जब शरीर में **वात दोष** बढ़ जाता है, तो मस्तिष्क और तंत्रिका तंत्र शांत नहीं हो पाते। इसी वजह से रात को करवटें बदलते रहना और विचारों का चक्र चलता रहता है।
 
-### 🍵 घरेलू उपचार और दिनचर्या:
-1. **पादाभ्यंग (पैरों की मालिश):** रात को सोने से पहले 5 मिनट तलवों पर गुनगुने तिल के तेल से मालिश करें।
-2. **जायफल वाला दूध:** सोने से पहले एक कप गुनगुने दूध में चुटकी भर जायफल पाउडर डालकर पिएं।
-3. **KSM-66 अश्वगंधा:** यह तनाव के हार्मोन को शांत कर प्राकृतिक गहरी नींद लाने में सर्वोत्तम है।
+### 🌿 सर्वोत्तम आयुर्वेदिक उपचार: **प्राणवेद KSM-66 अश्वगंधा रूट कैप्सूल्स**
+इस समस्या के स्थायी और सुरक्षित समाधान हेतु हमारा **KSM-66 अश्वगंधा** सबसे प्रामाणिक औषधि है।
+• **यह कैसे काम करता है:** यह 100% शुद्ध ऑर्गेनिक एडाप्टोजेन है, जो तनाव बढ़ाने वाले हार्मोन (कोर्टिसोल) को घटाता है और बिना किसी लत (Habit) के प्राकृतिक गहरी नींद बहाल करता है।
+
+### 🍵 सेवन विधि (How to Take):
+• **खुराक:** रोज रात को सोने से 45 मिनट पहले 1 कैप्सूल।
+• **अनुपान:** 1 कप गुनगुने दूध या गुनगुने पानी के साथ।
+• **अवधि:** 21 से 45 दिनों का नियमित कोर्स करने से वात शांत होकर मानसिक शांति मिलती है।
 
 **मेरा सवाल:** क्या आपको यह समस्या काफी समय से है, या हाल ही में किसी तनाव की वजह से शुरू हुई है?`,
         suggestedProducts: catalog.ashwagandha ? [catalog.ashwagandha] : [],
@@ -417,22 +428,23 @@ How may I guide your holistic healing journey today?`,
     return {
       message: `🌿 **Ayurvedic Clinical Assessment: Aggravated Vata Dosha**
 
-I hear you clearly. In Ayurveda, sleeplessness and racing nighttime thoughts are driven by an aggravated **Vata Dosha** (the air element governing nervous transmission). When Vata runs too dry and active, the mind cannot transition into restorative delta/REM sleep.
+I understand your concern clearly. In classical Ayurveda, insomnia and racing nighttime thoughts are driven by an aggravated **Vata Dosha** (air & ether elements) hyper-stimulating the central nervous system.
 
-### 🍵 Daily Ahara & Lifestyle Rituals:
-1. **Padabhyanga (Foot Massage):** Warm a few drops of sesame oil and massage the soles of your feet for 3–5 minutes before getting into bed.
-2. **Nutmeg Golden Milk:** Drink a small cup of lukewarm milk infused with a pinch of freshly grated nutmeg (*Jaiphal*) 30 minutes before sleep.
-3. **Screen Disconnect:** Discontinue mobile and laptop use at least 45 minutes before bedtime.
+### 🌿 Targeted Medicinal Treatment: **PranVeda KSM-66 Ashwagandha Root Capsules**
+The definitive classical solution to pacify Vata and permanently restore nocturnal neuro-restoration is our **KSM-66 Ashwagandha**.
+• **Mechanism of Action:** Unlike pharmaceutical sedatives, this gold-standard organic adaptogen down-regulates elevated evening cortisol, rebuilds adrenal resilience, and restores natural restorative deep REM sleep cycles with zero habit formation.
 
-### 🌿 Supportive Formulation:
-• **KSM-66 Ashwagandha Root Capsules:** Clinically standardized adaptogen that naturally lowers evening cortisol and restores deep sleep architecture without habit-forming grogginess.
+### 🍵 Prescribed Dosage & Anupana:
+• **Dosage:** Take 1 veg capsule nightly, 45 minutes before bedtime.
+• **Anupana (Vehicle):** With 1 cup of warm cow's milk (or warm water).
+• **Protocol Duration:** Recommended 21 to 45-day cycle for lasting neurological tranquility.
 
-**Diagnostic Follow-up:** How long have you experienced this, and do you also experience dry skin or sluggish morning digestion?`,
+**Diagnostic Follow-up:** How long have you experienced this restless sleep, and is it accompanied by daytime fatigue or digestive dryness?`,
       suggestedProducts: catalog.ashwagandha ? [catalog.ashwagandha] : [],
       followUps: [
         "How should I take Ashwagandha with warm milk?",
         "How quickly will I notice deeper sleep?",
-        "What foods trigger Vata imbalance?",
+        "Is KSM-66 Ashwagandha habit-forming?",
       ],
     };
   }
@@ -447,24 +459,25 @@ I hear you clearly. In Ayurveda, sleeplessness and racing nighttime thoughts are
       return {
         message: `🔥 **આયુર્વેદિક નિદાન: મંદાગ્નિ અને પિત્ત/વાત અસંતુલન**
 
-ચરક સંહિતા અનુસાર, મોટાભાગના રોગોનું મૂળ પેટની પાચન અગ્નિ (**જઠરાગ્નિ**) નબળી પડવામાં છે. 
-- જો છાતી કે ગળામાં બળતરા થતી હોય, તો એ **પિત્ત દોષ (Pitta)** વધવાનું લક્ષણ છે.
-- જો પેટ ફૂલી જતું હોય, ગેસ થતો હોય કે સવારે પેટ સાફ ન આવતું હોય, તો એ આંતરડામાં **વાત દોષ (Apana Vata)** અટકાઈ જવાનું લક્ષણ છે, જેનાથી શરીરમાં ઝેરી તત્વો (**આમ - Ama**) જમા થાય છે.
+ચરક સંહિતા અનુસાર, પેટની પાચન અગ્નિ (**જઠરાગ્નિ**) મંદ પડવાથી ખોરાકનું યોગ્ય પાચન થતું નથી અને આંતરડામાં ઝેરી તત્વો (**આમ - Ama**) જમા થાય છે.
+• છાતી-ગળામાં બળતરા એટલે **પિત્ત દોષ (Pitta)** વધવો.
+• પેટ ફૂલવું, ગેસ થવો અને કબજિયાત એટલે **અપાન વાત (Apana Vata)** અટકી જવો.
 
-### 🍵 ઘરગથ્થુ ઉપચાર & આહાર નિયમો:
-1. **જમતી વખતે ઠંડુ પાણી બંધ:** જમતી વખતે કે જમ્યા પછી તરત ફ્રિજનું ઠંડુ પાણી ક્યારેય ન પીવું. એ તમારી પાચક અગ્નિને ઓલવી નાખે છે. ફક્ત નવશેકું (હૂંફાળું) પાણી જ ઘૂંટડે-ઘૂંટડે પીવો.
-2. **સૂંઠ / આદું અને સિંધવ મીઠું:** બપોરે જમવાના ૧૦ મિનિટ પહેલાં તાજા આદુનો નાનો ટુકડો થોડા સિંધવ મીઠા સાથે ચાવીને ખાઓ, જેથી કુદરતી પાચક રસો છૂટા પડે.
-3. **વરિયાળી અને જીરાનું પાણી:** જમ્યા પછી અડધી ચમચી વરિયાળી અને જીરું ચાવીને ખાવ અથવા એનું હુંફાળું પાણી પીવો.
+### 🌿 સર્વોત્તમ આયુર્વેદિક ઉપચાર: **પ્રાણવેદ ઓર્ગેનિક ત્રિફળા ચૂર્ણ**
+પેટ અને પાચનની તમામ તકલીફોના મૂળિયાં સાફ કરવા માટે અમારું **ઓર્ગેનિક ત્રિફળા ચૂર્ણ** રામબાણ ઔષધ છે.
+• **કેમ અસરકારક છે:** હરડે, બહેડા અને આમળાનું પ્રમાણિત સમપ્રમાણ મિશ્રણ આંતરડાની અંદર જામેલા જૂના મળ અને ટોક્સિન્સ (આમ) ને હળવાશથી બહાર કાઢે છે, આંતરડાની કુદરતી ગતિશીલતા વધારે છે અને પિત્ત-એસિડિટીને મૂળમાંથી શાંત કરે છે.
 
-### 🌿 વૈદિક ઔષધિ માર્ગદર્શન:
-આંતરડામાં જમા થયેલા વર્ષો જૂના આમ (ટોક્સિન્સ) ને સાફ કરવા માટે **ઓર્ગેનિક ત્રિફળા ચૂર્ણ (હરડે, બહેડા, આમળા)** શ્રેષ્ઠ છે. એ કોઈ પેટ પાતળું કરવાની આદત પાડનારી દવા નથી, પણ આંતરડાના સ્નાયુઓને પોષણ આપીને સવારે કુદરતી રીતે પેટ સાફ કરે છે.
+### 🍵 સેવન વિધિ & નિયમો (How to Take):
+• **ડોઝ:** દરરોજ રાત્રે સૂતા પહેલાં ૧ નાની ચમચી (૩ થી ૫ ગ્રામ) ચૂર્ણ.
+• **અનુપાન (With What):** ૧ ગ્લાસ નવશેકા ગરમ પાણી સાથે.
+• **કોર્સ:** ૩૦ દિવસ સુધી નિયમિત લેવાથી સવારે એક જ વારમાં પેટ સાફ આવશે અને ગેસ-એસિડિટી કાયમ માટે બંધ થશે.
 
-**પ્રશ્ન:** શું તમને સવારે પેટ એક જ વારમાં સાફ આવે છે, કે દિવસમાં વારંવાર જવું પડે છે?`,
+**પ્રશ્ન:** શું તમને સવારે પેટ સાફ કરવામાં તકલીફ પડે છે, કે જમ્યા પછી તરત ભારેપણું અને ખાટા ઓડકાર આવે છે?`,
         suggestedProducts: catalog.triphala ? [catalog.triphala] : [],
         followUps: [
           "ત્રિફળા ચૂર્ણ રાત્રે ગરમ પાણી સાથે કેવી રીતે લેવું?",
           "શું ત્રિફળાની આદત પડી જાય ખરી?",
-          "એસિડિટી મટાડવા ખોરાકમાં શું પરેજી રાખવી?",
+          "એસિડિટી મટાડવા કેટલા દિવસ ત્રિફળા લેવું પડે?",
         ],
       };
     }
@@ -473,18 +486,22 @@ I hear you clearly. In Ayurveda, sleeplessness and racing nighttime thoughts are
       return {
         message: `🔥 **आयुर्वेदिक निदान: मंदाग्नि और पित्त दोष (Digestive Fire Imbalance)**
 
-पेट में गैस, एसिडिटी और भारीपन का मुख्य कारण पाचन अग्नि का कमजोर होना है, जिससे शरीर में **'आम' (Toxins)** बनने लगता है।
+पेट में गैस, एसिडिटी और भारीपन का मुख्य कारण पाचन अग्नि (**जठराग्नि**) का कमजोर होना है, जिससे आंतों में अपचित विषैले तत्व (**'आम' - Ama**) जमा होने लगते हैं।
 
-### 🍵 सरल घरेलू उपाय:
-1. **गुनगुना पानी पिएं:** भोजन के साथ या तुरंत बाद ठंडा पानी कभी न पिएं। सिर्फ घूंट-घूंट गुनगुना पानी पिएं।
-2. **सौंफ और जीरा:** दोपहर और रात के भोजन के बाद सौंफ चबाएं।
-3. **ऑर्गेनिक त्रिफला चूर्ण:** रात को सोने से पहले आधा चम्मच त्रिफला गुनगुने पानी से लें। यह आंतों की स्वाभाविक सफाई करता है।
+### 🌿 अचूक आयुर्वेदिक उपचार: **प्राणवेद ऑर्गेनिक त्रिफला चूर्ण**
+पाचन तंत्र को मजबूत करने और आंतों की पूर्ण शुद्धि हेतु हमारा **ऑर्गेनिक त्रिफला चूर्ण** सबसे उत्तम औषधि है।
+• **यह कैसे काम करता है:** हरड़, बहेड़ा और आंवला का यह शास्त्रीय योग आंतों की अंदरूनी परतों को पोषण देता है, जमे हुए टॉक्सिन्स को बाहर निकालता है और एसिडिटी को जड़ से शांत करता है।
+
+### 🍵 सेवन विधि (How to Take):
+• **खुराक:** रोज रात को सोने से पहले 1 चम्मच (3-5 ग्राम)।
+• **अनुपान:** 1 गिलास गुनगुने पानी के साथ।
+• **अवधि:** 30 दिन का नियमित कोर्स सुबह पेट को बिल्कुल साफ और हल्का बना देता है।
 
 **मेरा सवाल:** क्या आपको एसिडिटी खट्टे डकार के साथ होती है, या पेट में भारीपन और कब्ज ज्यादा रहता है?`,
         suggestedProducts: catalog.triphala ? [catalog.triphala] : [],
         followUps: [
           "त्रिफला लेने का सही तरीका क्या है?",
-          "एसिडिटी में क्या नहीं खाना चाहिए?",
+          "क्या त्रिफला से एसिडिटी हमेशा के लिए खत्म हो जाती है?",
         ],
       };
     }
@@ -492,24 +509,23 @@ I hear you clearly. In Ayurveda, sleeplessness and racing nighttime thoughts are
     return {
       message: `🔥 **Ayurvedic Clinical Assessment: Mandagni & Pitta/Ama Accumulation**
 
-In classical Ayurveda, optimal vitality begins with **Jatharagni (the digestive metabolic fire)**. 
-• Burning sensation/heartburn = Excess **Pitta** (acidic heat).
-• Bloating and irregular motion = Sluggish **Apana Vata** trapping undigested toxic waste (**Ama**).
+In classical Ayurveda, chronic indigestion, acid reflux, and bloating originate from impaired **Jatharagni** (digestive fire), allowing toxic metabolic waste (**Ama**) to accumulate in the GI tract.
 
-### 🍵 Healing Habits & Kitchen Remedies:
-1. **Sip Warm Water (Ushnodaka):** Avoid ice-cold drinks around meals, as they quench the digestive fire.
-2. **Ginger with Rock Salt:** Chew a sliver of fresh ginger with sendha namak 10 minutes before lunch to awaken digestive enzymes naturally.
-3. **Avoid Late Dinners:** Finish meals before 8:00 PM to give the colon resting hours.
+### 🌿 Targeted Medicinal Treatment: **PranVeda Organic Triphala Churna**
+The definitive Vedic solution for complete gastrointestinal rejuvenation is our **Organic Triphala Churna**.
+• **Mechanism of Action:** Formulated with cold-processed Haritaki, Bibhitaki, and Amla, it gently detoxifies stagnant Ama from the intestinal villi, stimulates bile secretion, neutralizes excess gastric Pitta heat, and regulates bowel peristalsis without dependency.
 
-### 🌿 Targeted Formulation:
-• **Organic Triphala Churna:** The venerable tridoshic formulation of Amla, Haritaki, and Bibhitaki that cleanses the intestinal tract gently overnight without creating dependency.
+### 🍵 Prescribed Dosage & Anupana:
+• **Dosage:** 1 teaspoon (3–5g) taken 30 minutes before bedtime.
+• **Anupana (Vehicle):** Dissolved in 1 cup of warm water.
+• **Protocol Duration:** 30–45 days for complete intestinal restoration and acid elimination.
 
-**Diagnostic Follow-up:** Do you primarily experience acid reflux after meals, or chronic sluggish bowels in the morning?`,
+**Diagnostic Follow-up:** Do you primarily suffer from burning heartburn after meals, or chronic sluggish bowels and morning bloating?`,
       suggestedProducts: catalog.triphala ? [catalog.triphala] : [],
       followUps: [
         "How to take Triphala churna with warm water?",
         "Is Triphala safe for daily long-term use?",
-        "What foods trigger Pitta acid accumulation?",
+        "Does Triphala permanently cure acid reflux?",
       ],
     };
   }
@@ -522,39 +538,43 @@ In classical Ayurveda, optimal vitality begins with **Jatharagni (the digestive 
   ) {
     if (isGujarati) {
       return {
-        message: `💆 **આયુર્વેદિક નિદાન: અસ્થિ ધાતુ પોષણ અને ખોપરીમાં પિત્ત ગરમી**
+        message: `💆 **આયુર્વેદિક નિદાન: ખોપરીમાં પિત્ત ગરમી અને અસ્થિ ધાતુ પોષણનો અભાવ**
 
-આયુર્વેદ અનુસાર વાળ (**કેશ**) એ આપણા શરીરના **અસ્થિ ધાતુ (હાડકાંના પોષણ)** નો ઉપધાતુ છે. જ્યારે માનસિક ચિંતા કે શરીરમાં ગરમી (**પિત્ત દોષ**) વધે છે, ત્યારે એ ગરમી સીધી ખોપરી (Scalp) તરફ ચડે છે. પરિણામે વાળના મૂળ નિર્બળ બનીને ખરવા લાગે છે.
+આયુર્વેદ અનુસાર વાળ (**કેશ**) એ અસ્થિ ધાતુનો ઉપધાતુ છે. જ્યારે શરીરમાં માનસિક ચિંતા કે પિત્ત દોષની ગરમી વધે છે, ત્યારે એ ગરમી સીધી ખોપરી (Scalp) ના મૂળમાં જઈને વાળના મૂળ નિર્બળ બનાવી દે છે, જેથી વાળ ખરવા લાગે છે.
 
-### 🌿 સાચી માલિશ પદ્ધતિ & ઘરગથ્થુ ઉપાય:
-1. **૧૦ મિનિટ હૂંફાળી ચંપી:** તેલને સીધું ગરમ કરવાને બદલે વાટકીને ગરમ પાણીમાં મૂકીને હૂંફાળું કરો. આંગળીઓના ટેરવાથી વાળના મૂળમાં હળવા હાથે ગોળાકાર માલિશ કરો. આનાથી ખોપરીનું તાપમાન ઠંડુ પડે છે.
-2. **આહાર નિયમ:** દરરોજ સવારે પલાળેલી ૪–૫ બદામ, થોડા કાળા તલ અને આંબળાનો રસ લેવાથી વાળના મૂળને કુદરતી કેલ્શિયમ અને આયર્ન મળે છે.
-3. **કેમિકલ શેમ્પૂ ટાળો:** સલ્ફેટ અને પેરાબીન વાળા સાબુ/શેમ્પૂથી વાળના મૂળ સુકાઈ જાય છે, એના બદલે હળવા આયુર્વેદિક ક્લીન્ઝર વાપરો.
+### 🌿 સર્વોત્તમ આયુર્વેદિક ઉપચાર: **પ્રાણવેદ ભૃંગરાજ અને આમળા હેર થેરાપી ઓઈલ**
+વાળ ખરતા તાત્કાલિક રોકવા અને નવા વાળના મૂળ મજબૂત કરવા માટે અમારું **ભૃંગરાજ અને આમળા હેર ઓઈલ** શ્રેષ્ઠ શાસ્ત્રોક્ત ઉપાય છે.
+• **કેમ અસરકારક છે:** શાસ્ત્રોમાં ભૃંગરાજને 'કેશરાજ' કહ્યો છે. પ્રાચીન ક્ષીરપાક વિધિથી ૧૮ કલાક સુધી ધીમી આંચે ઉકાળીને બનાવેલું આ તેલ ખોપરીની વધારાની ગરમી (Pitta) ને તરત ઠંડી પાડે છે અને વાળના મૂળિયાં સુધી જઈને રક્ત સંચાર વધારે છે.
 
-### 🌿 શ્રેષ્ઠ આયુર્વેદિક ઔષધ:
-આપણા શાસ્ત્રોમાં ભૃંગરાજને **"કેશરાજ"** (વાળનો રાજા) કહેવાયો છે. આપણું **ભૃંગરાજ અને આમળા હેર ઓઈલ** પ્રાચીન ક્ષીરપાક વિધિથી ૧૮ કલાક સુધી ધીમી આંચે ઉકાળીને બનાવેલું છે, જે વાળનું ખરવું ઘટાડીને મૂળને મજબૂત કરે છે.
+### 💆 ઉપયોગ વિધિ (How to Apply):
+• **રીત:** તેલને સહેજ હૂંફાળું કરીને આંગળીઓના ટેરવાથી વાળના મૂળમાં ૧૦ મિનિટ ગોળાકાર હળવી માલિશ કરો.
+• **સમય:** અઠવાડિયામાં ૨ થી ૩ વાર રાત્રે લગાવીને રાખી શકાય અથવા સ્નાન કરવાના ૧ કલાક પહેલાં લગાવો.
+• **પરિણામ:** ૧૫ થી ૨૧ દિવસમાં વાળનું અકાળે ખરવું નિયંત્રણમાં આવી જાય છે.
 
-**પ્રશ્ન:** શું તમારા વાળ મૂળમાંથી ખરે છે કે વચ્ચેથી તૂટે છે? અને શું માથામાં ખોડો કે ખંજવાળ પણ છે?`,
+**પ્રશ્ન:** શું તમારા વાળ મૂળમાંથી ખરે છે કે વચ્ચેથી તૂટે છે? સાથે ખોડો કે ખંજવાળ પણ રહે છે?`,
         suggestedProducts: catalog.bhringraj ? [catalog.bhringraj] : [],
         followUps: [
           "ભૃંગરાજ તેલ અઠવાડિયામાં કેટલી વાર લગાવવું જોઈએ?",
-          "વાળ ખરતા રોકવા માટે રોજિંદા આહારમાં શું ફેરફાર કરવો?",
+          "વાળ ખરતા રોકવા માટે પરિણામ કેટલા દિવસમાં મળશે?",
         ],
       };
     }
 
     if (isHindi) {
       return {
-        message: `💆 **आयुर्वेदिक निदान: अस्थि धातु पोषण और पित्त का बढ़ना**
+        message: `💆 **आयुर्वेदिक निदान: अस्थि धातु पोषण और स्कैल्प में पित्त गर्मी**
 
-बालों का झड़ना अक्सर स्कैल्प में बढ़ी हुई पित्त की गर्मी और पोषण की कमी के कारण होता है।
+बालों का अचानक झड़ना स्कैल्प की जड़ों में पित्त की अत्यधिक गर्मी और पोषण की कमी के कारण होता है।
 
-### 🌿 सही देखभाल और उपाय:
-1. **गुनगुने तेल से मालिश:** भृंगराज और आंवला तेल को हल्का गुनगुना करके 10 मिनट तक सिर की जड़ों में धीरे-धीरे मसाज करें।
-2. **आंवला और तिल:** भोजन में आंवला और तिल शामिल करें।
-3. **तनाव कम करें:** ज्यादा सोचने और देर रात जागने से बाल ज्यादा झड़ते हैं।
+### 🌿 अचूक आयुर्वेदिक उपचार: **प्राणवेद भृंगराज और आंवला हेयर थेरेपी ऑयल**
+बालों का गिरना रोककर जड़ों को पुनर्जीवित करने हेतु हमारा **भृंगराज और आंवला हेयर ऑयल** सर्वोपरि शास्त्रीय उपचार है।
+• **यह कैसे काम करता है:** 18 घंटे की क्षीरपाक विधि से सिद्ध यह तेल सिर की अतिरिक्त गर्मी को शांत करता है और बालों के रोमछिद्रों (Follicles) को गहरा पोषण देकर जड़ों को मजबूत करता है।
 
-**मेरा सवाल:** क्या बालों के साथ आपको डैंड्रफ की समस्या भी है?`,
+### 💆 प्रयोग विधि (How to Apply):
+• **तरीका:** तेल को हल्का गुनगुना करके अंगुलियों के पोरों से 10 मिनट तक सिर की जड़ों में धीरे-धीरे मसाज करें।
+• **समय:** सप्ताह में 2 से 3 बार रात को लगाकर सोएं या नहाने से 1 घंटा पहले लगाएं।
+
+**मेरा सवाल:** क्या बालों के साथ आपको डैंड्रफ या स्कैल्प में खुजली की समस्या भी है?`,
         suggestedProducts: catalog.bhringraj ? [catalog.bhringraj] : [],
         followUps: [
           "भृंगराज तेल लगाने का सही तरीका क्या है?",
@@ -566,17 +586,18 @@ In classical Ayurveda, optimal vitality begins with **Jatharagni (the digestive 
     return {
       message: `💆 **Ayurvedic Clinical Assessment: Asthi Dhatu & Scalp Pitta Heat**
 
-In Ayurveda, hair (*Kesha*) is the tissue byproduct of **Asthi Dhatu** (bone matrix) and is exceptionally vulnerable to excessive bodily heat (**Pitta**). When mental stress or spicy food drives heat upward, hair follicles shrink and shed prematurely.
+In classical Ayurveda, hair (*Kesha*) is the tissue byproduct of **Asthi Dhatu** (bone matrix) and is highly sensitive to excess cranial heat (**Pitta**). When stress or heat drives Pitta upward, hair follicles shrink, leading to acute shedding and thinning.
 
-### 🌿 Scalp Rituals & Nutrition:
-1. **The 10-Minute Warm Champi:** Warm cold-pressed oil in a water bath. Massage gently into scalp roots using circular finger movements to soothe the cranial nervous system.
-2. **Nutritional Reinforcement:** Consume soaked almonds, Amla juice, and curry leaves daily for bone tissue minerals.
-3. **Avoid Harsh Detergents:** Synthetic sulfates strip natural sebum, exacerbating root inflammation.
+### 🌿 Targeted Medicinal Treatment: **PranVeda Bhringraj & Amla Hair Therapy Oil**
+The definitive botanical remedy for root regeneration is our **Bhringraj & Amla Hair Oil**.
+• **Mechanism of Action:** Hand-crafted using the authentic 18-hour *Kshirapaka* slow-decoction process with wild Bhringraj ("King of Hair") and cold-pressed Amla, it cools inflammatory Pitta heat in the scalp, reactivates dormant hair follicles, and reinforces root tensile strength.
 
-### 🌿 Recommended Formulation:
-• **Bhringraj & Amla Hair Oil:** Slow-simmered for 18 hours using the authentic *Kshirapaka* technique to deeply nourish roots and arrest seasonal shedding.
+### 💆 Prescribed Application Protocol:
+• **Application:** Warm the oil slightly; gently massage into scalp roots using circular finger movements for 10 minutes.
+• **Frequency:** Apply 2–3 times per week overnight, or 1 hour prior to bathing.
+• **Results:** Noticeable reduction in shedding within 15–21 days of disciplined application.
 
-**Diagnostic Follow-up:** Is the shedding accompanied by dry flaking, itching, or excess hair breakage?`,
+**Diagnostic Follow-up:** Is the hair loss accompanied by dry dandruff, scalp redness, or brittle hair breakage?`,
       suggestedProducts: catalog.bhringraj ? [catalog.bhringraj] : [],
       followUps: [
         "How many times a week should I apply Bhringraj oil?",
@@ -593,19 +614,20 @@ In Ayurveda, hair (*Kesha*) is the tissue byproduct of **Asthi Dhatu** (bone mat
   ) {
     if (isGujarati) {
       return {
-        message: `✨ **આયુર્વેદિક નિદાન: રક્ત ધાતુ અને ભ્રાજક પિત્ત સંતુલન**
+        message: `✨ **આયુર્વેદિક નિદાન: રક્ત ધાતુ અને ભ્રાજક પિત્ત અસંતુલન**
 
-આયુર્વેદમાં ચહેરો એ તમારા **રક્ત ધાતુ (લોહીની શુદ્ધતા)** અને **ભ્રાજક પિત્ત** નો સીધો અરીસો છે. ઉપરથી મોંઘા કેમિકલ ક્રીમ લગાવવાથી ચામડી સુધરતી નથી, અંદરનું લોહી શુદ્ધ થાય અને ત્વચાના ઊંડા કોષોને સાચું તેલ મળે ત્યારે જ કુદરતી ચમક આવે છે.
+આયુર્વેદ અનુસાર ચહેરાની ચમક એ તમારા **રક્ત ધાતુ (લોહી)** અને **ભ્રાજક પિત્ત** ના સંતુલન પર આધાર રાખે છે. કેમિકલ ક્રીમોથી માત્ર ઉપરછલ્લો દેખાવ સુધરે છે, જ્યારે અસલી આયુર્વેદિક તેલ ત્વચાના ૭ સ્તરો સુધી જઈને કોષોનું સમારકામ કરે છે.
 
-### 🌸 દૈનિક રૂપ નિખાર નિયમો:
-1. **ભીની ત્વચા પર તેલ લગાવો:** ક્યારેય સુકા ચહેરા પર તેલ ન ઘસવું. ચહેરો નવશેકા પાણીથી ધોઈને સહેજ ભીનો હોય ત્યારે જ ૩–૪ ટીપાં હથેળીમાં ઘસીને હળવેથી ચહેરા અને ગરદન પર દબાવો.
-2. **રાત્રિ કાળી ઊંઘ:** રાત્રે ૧૦ થી ૨ દરમિયાન ત્વચાના કોષો પુનર્જીવિત થાય છે. આ સમયે ઊંઘવું સૌથી ઉત્તમ બ્યુટી ટ્રીટમેન્ટ છે.
-3. **તળેલો અને વાસી ખોરાક ટાળો:** વધારે પડતું તળેલું અને આથેલું ખાવાથી લોહીમાં ગરમી વધે છે જે ચહેરા પર ખીલ કે ડાઘના રૂપમાં બહાર આવે છે.
+### 🌿 અમૃતતુલ્ય ઉપચાર: **પ્રાણવેદ કુંકુમાદિ મિરેક્યુલસ ફેશિયલ ઓઇલ**
+ચહેરા પરના ડાઘ, ખીલના નિશાન, ટેનિંગ દૂર કરવા અને સોના જેવો કુદરતી નિખાર લાવવા માટે અમારું **કુંકુમાદિ તેલમ** સર્વોચ્ચ ઔષધ છે.
+• **કેમ અસરકારક છે:** અષ્ટાગ હૃદયમ્ પદ્ધતિથી ૧૦૦% શુદ્ધ કાશ્મીરી કેસર (સૅફ્રોન), લાલ ચંદન, મંજિષ્ઠા અને બકરીના દૂધ સાથે ૨૧ દુર્લભ જડીબુટ્ટીઓથી સિદ્ધ કરેલું આ તેલ ત્વચાના મેલાનિનને સંતુલિત કરે છે અને ચહેરાને તેજસ્વી બનાવે છે.
 
-### 🌿 કુંકુમાદિ તેલમ (કાશ્મીરી કેસર અમૃત):
-અષ્ટાગ હૃદયમ્ ગ્રંથ અનુસાર તૈયાર થયેલું આપણું **કુંકુમાદિ મિરેક્યુલસ ફેશિયલ ઓઇલ** અસલી કાશ્મીરી કેસર, લાલ ચંદન અને ૨૧ જડીબુટ્ટીઓથી બનેલું છે. એ રાત્રે ચહેરાના કાળા ડાઘ અને ટેનિંગને હળવા કરીને સવારે ગોલ્ડન ગ્લો આપે છે.
+### ✨ ઉપયોગ વિધિ (How to Apply):
+• **રીત:** રાત્રે ચહેરો તાજા પાણીથી ધોઈને સહેજ ભીની ત્વચા પર ૩ થી ૪ ટીપાં હથેળીમાં ઘસીને હળવા હાથે ચહેરા અને ગરદન પર દબાવો.
+• **સમય:** દરરોજ રાત્રે સૂતા પહેલાં લગાવીને આખી રાત રહેવા દો.
+• **કોર્સ:** માત્ર ૧૪ થી ૨૧ દિવસમાં ચહેરા પર કુદરતી ચમક (Golden Glow) સ્પષ્ટ દેખાવા લાગે છે.
 
-**પ્રશ્ન:** તમારી સ્કિન સામાન્ય રીતે ડ્રાય (સૂકી) રહે છે કે ઓઇલી (ચીકણી)?`,
+**પ્રશ્ન:** તમારી ત્વચા સામાન્ય રીતે સૂકી (Dry) રહે છે કે ચીકણી (Oily)?`,
         suggestedProducts: catalog.kumkumadi ? [catalog.kumkumadi] : [],
         followUps: [
           "કુંકુમાદિ ઓઇલ કેટલા ટીપાં વાપરવું જોઈએ?",
@@ -614,17 +636,45 @@ In Ayurveda, hair (*Kesha*) is the tissue byproduct of **Asthi Dhatu** (bone mat
       };
     }
 
+    if (isHindi) {
+      return {
+        message: `✨ **आयुर्वेदिक निदान: रक्त धातु और भ्राजक पित्त की शुद्धि**
+
+चेहरे पर दाग-धब्बे, झाइयां और बेजान त्वचा रक्त में पित्त की अधिकता का परिणाम होती हैं।
+
+### 🌿 अमृतोपम आयुर्वेदिक उपचार: **प्राणवेद कुंकुमादि मिरैकुलस फेशियल ऑयल**
+त्वचा के दाग-धब्बे हटाकर प्राकृतिक स्वर्णिम कांति पाने हेतु हमारा **कुंकुमादि तैलम** सर्वश्रेष्ठ औषधि है।
+• **यह कैसे काम करता है:** असली कश्मीरी केसर, लाल चंदन और 21 दुर्लभ औषधियों से निर्मित यह तेल त्वचा की गहराई में जाकर मेलेनिन को संतुलित करता है और बिना किसी केमिकल के प्राकृतिक चमक देता है।
+
+### ✨ प्रयोग विधि (How to Apply):
+• **तरीका:** रात को चेहरा धोकर हल्की नम त्वचा पर 3-4 बूंदें धीरे-धीरे चेहरे और गर्दन पर लगाएं।
+• **समय:** रोज रात को सोने से पहले।
+• **परिणाम:** 14 से 21 दिनों में त्वचा पर स्पष्ट निखार और दाग-धब्बे हल्के होने लगते हैं।
+
+**मेरा सवाल:** आपकी त्वचा तैलीय (Oily) है या रूखी (Dry)?`,
+        suggestedProducts: catalog.kumkumadi ? [catalog.kumkumadi] : [],
+        followUps: [
+          "कुंकुमादि तेल लगाने का सही समय क्या है?",
+          "क्या इसे ऑयली स्किन पर लगा सकते हैं?",
+        ],
+      };
+    }
+
     return {
       message: `✨ **Ayurvedic Assessment: Rakta Dhatu & Bhrajaka Pitta Radiance**
 
-In Ayurveda, skin health mirrors your **Rakta Dhatu (blood tissue)** and the balanced function of **Bhrajaka Pitta**. Chemical creams merely coat the surface, whereas classical botanicals penetrate the deep subcutaneous layers.
+In Ayurveda, skin radiance is determined by the purity of **Rakta Dhatu** (blood plasma) and balanced **Bhrajaka Pitta** in the dermal layers. Synthetic creams only coat the exterior, whereas pure classical tailams permeate the 7 cellular layers of the epidermis.
 
-### 🌸 Daily Luminous Rituals:
-1. **Damp Skin Application:** Wash with lukewarm water and leave skin slightly damp. Press 3–4 drops into face and neck nightly.
-2. **Internal Blood Cleansing:** Drink plenty of warm water, and avoid deep-fried foods that overheat the blood.
+### 🌿 Targeted Medicinal Treatment: **PranVeda Kumkumadi Miraculous Facial Oil**
+The crowned elixir for pigment correction and luminous glow is our **Kumkumadi Tailam**.
+• **Mechanism of Action:** Formulated according to the classical *Ashtanga Hridaya* treatise with certified Grade-1 Kashmiri Saffron, Red Sandalwood, and 21 wild botanicals infused in pure goat's milk, it dissolves hyperpigmentation, restores microcirculation, and delivers an authentic golden glow.
 
-### 🌿 Signature Formulation:
-• **Kumkumadi Miraculous Facial Oil:** Handcrafted with Grade-1 Kashmiri Saffron and 21 Himalayan herbs to reduce dark spots and restore natural morning radiance.`,
+### ✨ Prescribed Application Protocol:
+• **Application:** Cleanse face thoroughly with lukewarm water. While skin is slightly damp, press 3–4 drops into face and neck using upward strokes.
+• **Timing:** Apply nightly before bedtime and leave on overnight.
+• **Protocol Duration:** Visible skin tone evenness and radiance within 14–21 days.
+
+**Diagnostic Follow-up:** Is your facial skin naturally dry, combination, or prone to active oiliness and cystic breakouts?`,
       suggestedProducts: catalog.kumkumadi ? [catalog.kumkumadi] : [],
       followUps: [
         "How many drops of Kumkumadi oil should I use?",
@@ -641,43 +691,73 @@ In Ayurveda, skin health mirrors your **Rakta Dhatu (blood tissue)** and the bal
   ) {
     if (isGujarati) {
       return {
-        message: `⚡ **આયુર્વેદિક નિદાન: ઓજસ અને ધાતુ પોષણ (Vital Stamina)**
+        message: `⚡ **આયુર્વેદિક નિદાન: ઓજસ ક્ષય અને સપ્ત ધાતુ પોષણનો અભાવ**
 
-આયુર્વેદમાં **ઓજસ (Ojas)** એ શરીરની તમામ સાત ધાતુઓનો ઉત્તમ અર્ક છે. જ્યારે દોડધામ, સ્ટ્રેસ કે પૂરતા પોષણના અભાવે ઓજસ ઘટે છે, ત્યારે આખો દિવસ થાક, આળસ અને સ્ટેમિનાનો અભાવ અનુભવાય છે.
+આયુર્વેદમાં **ઓજસ (Ojas)** એ શરીરની તમામ સાત ધાતુઓનો પરમ સાર છે. જ્યારે દોડધામ, સ્ટ્રેસ કે માનસિક થાકથી ઓજસ ઓછું થાય છે, ત્યારે આખો દિવસ સુસ્તી, કમજોરી અને સ્ટેમિનાનો અભાવ લાગે છે.
 
-### 🍵 શક્તિવર્ધક નિયમો અને આહાર:
-1. **સવારનું કુદરતી રસાયણ:** સવારે નરણા કોઠે હૂંફાળા દૂધ અથવા પાણી સાથે મગના દાણા જેટલું અસલી હિમાલયન શિલાજીત લેવાથી સેલ્યુલર એનર્જી (ATP) વધે છે.
-2. **સાત્વિક ઊર્જા આહાર:** ખજૂર, અંજીર, ગીર ગાયનું શુદ્ધ ઘી અને સીઝનલ ફળો નાસ્તામાં સામેલ કરો.
-3. **વધારાની કોફી ટાળો:** વધુ પડતી કોફી અંદરથી ચેતાઓ સુકવી નાખે છે; એના બદલે રસાયણ આહાર પસંદ કરો.
+### 🌿 પરમ રસાયણ ઉપચાર: **પ્રાણવેદ પ્યોર હિમાલયન શિલાજીત રેઝિન (16,000ft)**
+શરીરની નબળાઈને જડમૂળથી દૂર કરવા અને અખૂટ શક્તિ-સ્ટેમિના પાછો મેળવવા માટે અમારું **ગોલ્ડ-ગ્રેડ હિમાલયન શિલાજીત** સૌથી શક્તિશાળી ઉપાય છે.
+• **કેમ અસરકારક છે:** ૧૬,૦૦૦ ફૂટ હિમાલયના શિખરો પરથી મેળવેલું શુદ્ધ શિલાજીત ૭૫%+ ફુલ્વિક એસિડ અને ૮૪+ આયનિક મિનરલ્સ ધરાવે છે. એ સીધું સેલ્યુલર માઇટોકોન્ડ્રિયામાં જઈને કુદરતી ઊર્જા (ATP) બનાવે છે અને શરીરની અશક્તિ દૂર કરે છે.
 
-### 🌿 શ્રેષ્ઠ આયુર્વેદિક ઔષધ:
-• **પ્યોર હિમાલયન શિલાજીત રેઝિન (૧૬,૦૦૦ ફૂટ):** >૭૫% ફુલ્વિક એસિડ અને ૮૪+ મિનરલ્સ સાથે કુદરતી સ્ટેમિના અને શરીરની નબળાઈ દૂર કરે છે.
-• **રોયલ કેસર ચ્યવનપ્રાશ:** રોગપ્રતિકારક શક્તિ અને ફેફસાંની તાકાત વધારે છે.
+### 🍵 સેવન વિધિ & નિયમો (How to Take):
+• **ડોઝ:** મગના દાણા જેટલું (૨૫૦-૩૦૦ મિ.ગ્રા.) સાથે આપેલી પિત્તળની ચમચીથી લો.
+• **અનુપાન (With What):** સવારે નરણા કોઠે (Empty Stomach) ૧ કપ હૂંફાળા દૂધ અથવા ગરમ પાણીમાં ઓગાળીને પીવો.
+• **કોર્સ:** ૬૦ થી ૯૦ દિવસનો કોર્સ કરવાથી શરીરમાં ભરપૂર તાકાત અને સદાબહાર સ્ફૂર્તિ રહે છે.
 
-**પ્રશ્ન:** શું તમને સવારે ઊઠતાં જ થાક લાગે છે, કે બપોર પછી એનર્જી ઘટી જાય છે?`,
+**પ્રશ્ન:** શું તમને સવારે ઊઠતાં જ થાક લાગે છે, કે દિવસ દરમિયાન કામ કરતાં એનર્જી ઘટી જાય છે?`,
         suggestedProducts: catalog.shilajit ? [catalog.shilajit] : [],
         followUps: [
           "શિલાજીત લેવાની સાચી રીત અને સમય કયો છે?",
-          "ચ્યવનપ્રાશ કઈ ઋતુમાં લઈ શકાય?",
+          "શિલાજીત કેટલા મહિના સુધી ચાલુ રાખી શકાય?",
+          "શું શિલાજીત દૂધ સાથે જ લેવું જરૂરી છે?",
+        ],
+      };
+    }
+
+    if (isHindi) {
+      return {
+        message: `⚡ **आयुर्वेदिक निदान: ओजस क्षय और धातु दुर्बलता**
+
+शारीरिक व मानसिक थकान का मुख्य कारण शरीर में **ओजस (प्राकृतिक जीवनी शक्ति)** की कमी होना है।
+
+### 🌿 परम रसायन उपचार: **प्राणवेद प्योर हिमालयन शिलाजीत रेजिन (16,000ft)**
+कमजोरी को जड़ से खत्म कर फौलादी स्टेमिना और ऊर्जा पाने हेतु हमारा **गोल्ड-ग्रेड शिलाजीत रेजिन** अद्वितीय औषधि है।
+• **यह कैसे काम करता है:** 16,000 फीट हिमालय की चोटियों से निकाला गया यह शिलाजीत 75%+ फुल्विक एसिड और 84+ खनिजों से भरपूर है, जो कोशिकाओं में सीधी ऊर्जा (ATP) का संचार करता है।
+
+### 🍵 सेवन विधि (How to Take):
+• **खुराक:** मटर के दाने जितना (250-300mg) पीतल की चम्मच से।
+• **अनुपान:** सुबह खाली पेट 1 कप गुनगुने दूध या गुनगुने पानी में घोलकर पिएं।
+• **अवधि:** 60 से 90 दिनों का नियमित सेवन शरीर को पूर्ण शक्तिशाली और ऊर्जावान बना देता है।
+
+**मेरा सवाल:** क्या आपको सुबह उठते ही थकान महसूस होती है, या दिनभर काम के बाद ऊर्जा कम हो जाती है?`,
+        suggestedProducts: catalog.shilajit ? [catalog.shilajit] : [],
+        followUps: [
+          "शिलाजीत लेने का सही समय और तरीका क्या है?",
+          "शिलाजीत का असर कितने दिनों में दिखता है?",
         ],
       };
     }
 
     return {
-      message: `⚡ **Ayurvedic Assessment: Ojas & Dhatu Nourishment**
+      message: `⚡ **Ayurvedic Assessment: Ojas Depletion & Cellular Exhaustion**
 
-In Ayurveda, **Ojas** is the supreme biological essence of vitality. When depleted by continuous stress and erratic nutrition, cellular fatigue and diminished stamina result.
+In classical Ayurveda, enduring physical stamina and mental vigor stem from **Ojas** (the supreme essence of all seven bodily dhatus). When Ojas is depleted by chronic work stress and oxidative load, profound cellular fatigue sets in.
 
-### 🍵 Ojas-Restoring Rituals:
-1. **Natural Mineral Rasayana:** Take a pea-sized portion of purified Himalayan Shilajit in lukewarm milk or water in the morning.
-2. **Whole Food Fuel:** Incorporate dates, almonds, and pure A2 cow ghee into your routine.
+### 🌿 Targeted Medicinal Treatment: **PranVeda Pure Himalayan Shilajit Resin (16,000ft)**
+The premier Ayurvedic Rasayana for cellular rejuvenation and peak physical stamina is our **Purified Himalayan Shilajit Resin**.
+• **Mechanism of Action:** Ethically sourced at 16,000ft altitude and lab-purified with gold standards, it delivers >75% Fulvic Acid and 84+ ionic trace minerals directly into cellular mitochondria to boost natural ATP energy production and combat debility.
 
-### 🌿 Recommended Formulation:
-• **Pure Himalayan Shilajit Resin:** Sourced at 16,000ft altitude with >75% Fulvic Acid and 84+ ionic trace minerals for sustained cellular ATP energy.`,
+### 🍵 Prescribed Dosage & Anupana:
+• **Dosage:** A pea-sized portion (250–300mg) measured with the provided brass spoon.
+• **Anupana (Vehicle):** Dissolved in 1 cup of lukewarm milk or water in the morning on an empty stomach.
+• **Protocol Duration:** 60–90 days for peak physical endurance, cellular recovery, and vitality.
+
+**Diagnostic Follow-up:** Do you feel lethargic upon waking in the morning, or does your energy crash midway through the afternoon?`,
       suggestedProducts: catalog.shilajit ? [catalog.shilajit] : [],
       followUps: [
         "How to consume Shilajit correctly with warm water or milk?",
         "When is the best time of day to take Shilajit?",
+        "For how many months can I safely take Shilajit?",
       ],
     };
   }
@@ -690,16 +770,20 @@ In Ayurveda, **Ojas** is the supreme biological essence of vitality. When deplet
   ) {
     if (isGujarati) {
       return {
-        message: `🌿 **આયુર્વેદિક સેવન વિધિ (How to Take):**
+        message: `🌿 **પ્રાણવેદ ઔષધિ સેવન વિધિ & અનુપાન ગાઈડ:**
 
-આયુર્વેદમાં કોઈપણ ઔષધિ જેટલી મહત્વની છે, એટલું જ મહત્વ એના **અનુપાન (જેની સાથે લેવાય છે — જેમ કે હૂંફાળું દૂધ, મધ કે પાણી)** નું છે.
+આયુર્વેદમાં ઔષધિનું સંપૂર્ણ પરિણામ મેળવવા માટે તેના **અનુપાન (જેની સાથે લેવાય છે)** નું સૌથી મોટું મહત્વ છે:
 
-• **અશ્વગંધા:** રાત્રે જમ્યાના ૪૫ મિનિટ પછી ૧ કેપ્સ્યુલ હૂંફાળા દૂધ સાથે લેવી શ્રેષ્ઠ છે.
-• **શિલાજીત:** સવારે નરણા કોઠે (Empty Stomach) મગના દાણા જેટલું (૨૫૦-૩૦૦ મિ.ગ્રા.) હૂંફાળા દૂધ કે પાણીમાં ઓગાળીને પીવું.
-• **ત્રિફળા ચૂર્ણ:** રાત્રે સૂતા પહેલાં ૧ નાની ચમચી નવશેકા ગરમ પાણી સાથે પીવું.
-• **કુંકુમાદિ તેલ:** રાત્રે ચહેરો ધોઈને સહેજ ભીની ચામડી પર ૩–૪ ટીપાં હળવા હાથે લગાવીને સૂઈ જવું.
+| પ્રાણવેદ ઔષધિ | સેવનનો શ્રેષ્ઠ સમય | સાચું અનુપાન |
+| :--- | :--- | :--- |
+| **KSM-66 અશ્વગંધા** | રાત્રે સૂવાના ૪૫ મિનિટ પહેલાં | ૧ કપ હૂંફાળું દૂધ (અથવા પાણી) |
+| **ઓર્ગેનિક ત્રિફળા ચૂર્ણ** | રાત્રે સૂતા પહેલાં | ૧ ગ્લાસ નવશેકું ગરમ પાણી |
+| **પ્યોર હિમાલયન શિલાજીત** | સવારે નરણા કોઠે (Empty Stomach) | હૂંફાળું દૂધ અથવા ગરમ પાણી |
+| **કુંકુમાદિ ફેશિયલ ઓઇલ** | રાત્રે સૂતા પહેલાં | સહેજ ભીની ત્વચા પર ૩–૪ ટીપાં |
+| **ભૃંગરાજ હેર ઓઇલ** | અઠવાડિયામાં ૨-૩ વાર રાત્રે | હૂંફાળું કરીને મૂળમાં ૧૦ મિનિટ માલિશ |
+| **રોયલ કેસર ચ્યવનપ્રાશ** | સવારે નરણા કોઠે | ૧ ચમચી હૂંફાળા દૂધ સાથે |
 
-શું તમારે આમાંથી કોઈ ચોક્કસ ઔષધિ વિશે વધુ વિગતવાર જાણવું છે?`,
+તમારે આમાંથી કઈ ઔષધિ શરૂ કરવી છે?`,
         suggestedProducts: [],
         followUps: [
           "અશ્વગંધા શું પાણી સાથે લઈ શકાય?",
@@ -710,20 +794,25 @@ In Ayurveda, **Ojas** is the supreme biological essence of vitality. When deplet
     }
 
     return {
-      message: `🌿 **Ayurvedic Anupana & Dosage Protocol:**
+      message: `🌿 **PranVeda Anupana & Dosage Protocol Guide:**
 
-In classical Ayurveda, the vehicle (*Anupana*) with which an herb is ingested determines its cellular bioavailability.
+In classical Ayurveda, the vehicle (*Anupana*) with which you take an herb carries the botanical phytochemicals deep into the target tissue (*Dhatus*):
 
-• **Ashwagandha:** 1 capsule 45 minutes after dinner with warm milk.
-• **Shilajit Resin:** A pea-sized portion (250–300mg) dissolved in lukewarm milk or water in the morning on an empty stomach.
-• **Triphala Churna:** 1 teaspoon in lukewarm water 30 minutes before sleep.
-• **Kumkumadi Oil:** 3–4 drops gently pressed into damp skin before sleep.
+| Formulation | Best Time | Prescribed Anupana |
+| :--- | :--- | :--- |
+| **KSM-66 Ashwagandha** | 45m before sleep | 1 cup warm milk (or warm water) |
+| **Organic Triphala Churna** | Night before bed | 1 cup lukewarm water |
+| **Himalayan Shilajit Resin** | Morning on empty stomach | Warm milk or warm water |
+| **Kumkumadi Facial Oil** | Night before sleep | 3–4 drops on clean, damp skin |
+| **Bhringraj Hair Oil** | 2–3 times a week | Warm oil, 10m gentle root massage |
+| **Royal Chyawanprash** | Morning empty stomach | 1 teaspoon with warm milk |
 
-Which specific formulation would you like dosage instructions for?`,
+Which specific formulation would you like dosage guidance on?`,
       suggestedProducts: [],
       followUps: [
         "Can I take Ashwagandha with warm water instead of milk?",
         "For how many months can I continue Shilajit?",
+        "Can Triphala be taken every day?",
       ],
     };
   }
@@ -731,39 +820,41 @@ Which specific formulation would you like dosage instructions for?`,
   // 8. GENERAL / DEFAULT AYURVEDIC GUIDANCE
   if (isGujarati) {
     return {
-      message: `🌿 **નમસ્તે! હું તમારી વાત સાંભળી રહ્યો છું.**
+      message: `🌿 **નમસ્તે! હું તમારી સમસ્યા સમજવા માટે સંપૂર્ણ તૈયાર છું.**
 
-આયુર્વેદમાં કોઈપણ બીમારી કે શારીરિક અસંતુલનને સમજવા માટે મૂળ લક્ષણો જાણવા જરૂરી છે.
+આયુર્વેદમાં દરેક સમસ્યાના કાયમી ઉકેલ માટે તેના મૂળ દોષ (વાત, પિત્ત, કફ) ને સમજવો જરૂરી છે.
 
-તમને નીચેનામાંથી શેના વિશે સલાહ જોઈએ છે?
-1. **ઊંઘ, માનસિક તણાવ કે ચિંતા?**
-2. **ગેસ, એસિડિટી, અપચો કે પેટની તકલીફ?**
-3. **વાળ ખરવા કે માથાની ગરમી?**
-4. **ચહેરાનો ગ્લો, ડાઘ કે ખીલ?**
-5. **શરીરમાં થાક, નબળાઈ કે સ્ટેમિનાનો અભાવ?**
+તમને નીચેનામાંથી કઈ સમસ્યાનો આયુર્વેદિક ઉપચાર જોઈએ છે?
+1. **ઊંઘ ન આવવી, માનસિક તણાવ કે ચિંતા?** (ઉપાય: પ્રાણવેદ KSM-66 અશ્વગંધા)
+2. **ગેસ, એસિડિટી, અપચો કે પેટ સાફ ન થવું?** (ઉપાય: પ્રાણવેદ ઓર્ગેનિક ત્રિફળા ચૂર્ણ)
+3. **વાળ ખરવા, પાતળા થવા કે માથાની ગરમી?** (ઉપાય: પ્રાણવેદ ભૃંગરાજ & આમળા હેર ઓઈલ)
+4. **ચહેરા પર ડાઘ, ખીલ કે ગ્લોનો અભાવ?** (ઉપાય: પ્રાણવેદ કુંકુમાદિ ફેશિયલ ઓઇલ)
+5. **શરીરમાં થાક, નબળાઈ કે સ્ટેમિનાની કમી?** (ઉપાય: પ્રાણવેદ હિમાલયન શિલાજીત રેઝિન)
 
-તમારી સમસ્યા મને થોડી વધુ વિગતમાં જણાવો (જેમ કે કેટલા સમયથી થાય છે, તમારી ખાણી-પીણી કેવી છે), જેથી હું તમને સાચો અને અસરકારક આયુર્વેદિક ઉપાય આપી શકું.`,
+તમારા લક્ષણો મને જણાવો, હું તમને યોગ્ય ઔષધ અને સેવન વિધિ જણાવીશ.`,
       suggestedProducts: [],
       followUps: [
         "મને ઊંઘ નથી આવતી અને સ્ટ્રેસ રહે છે",
         "પેટમાં ગેસ અને એસિડિટી બહુ રહે છે",
-        "વાળ બહુ ખરે છે, ઉપાય જણાવો",
+        "વાળ બહુ ખરે છે, સાચો ઉપાય આપો",
         "શરીરમાં થાક અને અશક્તિ લાગે છે",
       ],
     };
   }
 
   return {
-    message: `🌿 **Namaste! I am listening carefully to your health journey.**
+    message: `🌿 **Namaste! I am here to guide your Ayurvedic healing journey.**
 
-In classical Ayurveda, the human body is governed by the three biological energies (**Vata, Pitta, and Kapha**). When any of these fall out of balance due to diet or stress, symptoms manifest.
+In classical Ayurveda, true healing occurs by balancing the body's internal biological energies (**Vata, Pitta, and Kapha**) with pure botanical formulations.
 
-Please share a little more context with me:
-1. Is your concern focused on **sleep, mental stress, or restlessness**?
-2. Are you experiencing **digestive fire (Agni) issues, acidity, or bloating**?
-3. Or are you focusing on **hair health, skin radiance, or physical energy**?
+Which specific concern would you like targeted Ayurvedic treatment for?
+1. **Insomnia, evening stress, or anxiety?** (Remedy: PranVeda KSM-66 Ashwagandha)
+2. **Acidity, digestive fire issues, or gut stagnation?** (Remedy: PranVeda Organic Triphala Churna)
+3. **Hair shedding, scalp heat, or thinning?** (Remedy: PranVeda Bhringraj & Amla Hair Oil)
+4. **Facial dullness, blemishes, or dark spots?** (Remedy: PranVeda Kumkumadi Facial Oil)
+5. **Chronic fatigue, physical weakness, or low stamina?** (Remedy: PranVeda Himalayan Shilajit Resin)
 
-Tell me your specific symptoms, and I will recommend personalized lifestyle rituals and authentic herbal wisdom.`,
+Please share your symptoms, and I will prescribe the precise formulation and dosage.`,
     suggestedProducts: [],
     followUps: [
       "I struggle with evening stress and sleep",
