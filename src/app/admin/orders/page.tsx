@@ -104,10 +104,63 @@ export default function AdminOrdersPage() {
                       <span className="font-serif text-2xl font-bold text-forest">
                         #{order.orderNumber}
                       </span>
-                      <span className="px-3 py-0.5 rounded-full bg-gold/15 text-forest text-xs font-bold">
-                        {order.paymentMethod} • {order.paymentStatus}
+                      <span
+                        className={`px-3 py-0.5 rounded-full text-xs font-bold ${
+                          order.paymentStatus === "PAID"
+                            ? "bg-emerald-100 text-emerald-800 border border-emerald-300"
+                            : order.paymentStatus === "FAILED"
+                            ? "bg-red-100 text-red-800 border border-red-300"
+                            : "bg-amber-100 text-amber-800 border border-amber-300"
+                        }`}
+                      >
+                        {order.paymentMethod === "RAZORPAY" ? "UPI / ONLINE" : order.paymentMethod} • {order.paymentStatus}
                       </span>
                     </div>
+
+                    {order.razorpayPaymentId && (
+                      <div className="mt-2 inline-flex flex-wrap items-center gap-2 px-3 py-1.5 rounded-xl bg-linen border border-sand text-xs text-forest">
+                        <span className="font-bold text-muted uppercase text-[10px] tracking-wider">
+                          Customer UPI Ref / UTR:
+                        </span>
+                        <code className="font-mono font-bold text-forest bg-white px-2 py-0.5 rounded border border-sand">
+                          {order.razorpayPaymentId.replace(/^upi_/, "")}
+                        </code>
+                        {order.paymentStatus !== "PAID" && (
+                          <button
+                            type="button"
+                            onClick={async () => {
+                              const newEdits = {
+                                ...edits,
+                                [order.id]: { ...edit, paymentStatus: "PAID" },
+                              };
+                              setEdits(newEdits);
+                              setSavingId(order.id);
+                              try {
+                                const res = await fetch("/api/admin/orders", {
+                                  method: "PATCH",
+                                  headers: { "Content-Type": "application/json" },
+                                  body: JSON.stringify({
+                                    orderId: order.id,
+                                    orderStatus: edit.orderStatus,
+                                    paymentStatus: "PAID",
+                                    trackingNote: edit.trackingNote,
+                                  }),
+                                });
+                                if (res.ok) {
+                                  showToast(`Order #${order.orderNumber} payment verified & marked PAID!`, "success");
+                                  loadOrders();
+                                }
+                              } finally {
+                                setSavingId(null);
+                              }
+                            }}
+                            className="px-2.5 py-1 rounded-lg bg-[#1F6E43] text-white text-[11px] font-bold hover:bg-[#185936] transition cursor-pointer shadow-2xs"
+                          >
+                            ✓ Verify &amp; Approve Payment
+                          </button>
+                        )}
+                      </div>
+                    )}
                     <div className="text-xs text-muted mt-1">
                       {new Date(order.createdAt).toLocaleString("en-IN")} •{" "}
                       <strong>{order.customerName}</strong> ({order.customerEmail} •{" "}

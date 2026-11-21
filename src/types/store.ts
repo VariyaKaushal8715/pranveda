@@ -107,6 +107,7 @@ export interface OrderData {
   total: number;
   paymentMethod: "COD" | "RAZORPAY" | string;
   paymentStatus: "PENDING" | "PAID" | "FAILED" | string;
+  razorpayPaymentId?: string | null;
   orderStatus: "PLACED" | "PACKED" | "SHIPPED" | "DELIVERED" | "CANCELLED" | string;
   trackingNote?: string | null;
   createdAt: string;
