@@ -40,6 +40,10 @@ const DEFAULT_SETTINGS: StoreSettings = {
   instagramUrl: "https://instagram.com/pranveda.ayurveda",
   upiId: "pranveda@okhdfcbank",
   upiName: "PranVeda Apothecary",
+  upiEnabled: false,
+  razorpayKeyId: "",
+  razorpayKeySecret: "",
+  razorpayEnabled: true,
   freeShippingThreshold: 499,
   shippingFee: 49,
 };

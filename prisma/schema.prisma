@@ -154,6 +154,10 @@ model StoreSetting {
   instagramUrl          String   @default("https://instagram.com/pranveda.ayurveda")
   upiId                 String   @default("pranveda@okhdfcbank")
   upiName               String   @default("PranVeda Apothecary")
+  upiEnabled            Boolean  @default(false)
+  razorpayKeyId         String?
+  razorpayKeySecret     String?
+  razorpayEnabled       Boolean  @default(true)
   freeShippingThreshold Int      @default(499)
   shippingFee           Int      @default(49)
   updatedAt             DateTime @updatedAt

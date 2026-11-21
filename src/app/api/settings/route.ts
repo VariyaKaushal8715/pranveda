@@ -10,7 +10,7 @@ export async function GET() {
   return NextResponse.json({
     settings,
     integrations: {
-      razorpayLive: isRazorpayConfigured(),
+      razorpayLive: isRazorpayConfigured(settings),
       smtpLive: isSmtpConfigured(),
     },
   });
@@ -41,6 +41,15 @@ export async function PATCH(req: NextRequest) {
         body.instagramUrl !== undefined ? String(body.instagramUrl).trim() : current.instagramUrl,
       upiId: body.upiId !== undefined ? String(body.upiId).trim() : current.upiId,
       upiName: body.upiName !== undefined ? String(body.upiName).trim() : current.upiName,
+      upiEnabled: body.upiEnabled !== undefined ? Boolean(body.upiEnabled) : current.upiEnabled,
+      razorpayKeyId:
+        body.razorpayKeyId !== undefined ? String(body.razorpayKeyId).trim() : current.razorpayKeyId,
+      razorpayKeySecret:
+        body.razorpayKeySecret !== undefined
+          ? String(body.razorpayKeySecret).trim()
+          : current.razorpayKeySecret,
+      razorpayEnabled:
+        body.razorpayEnabled !== undefined ? Boolean(body.razorpayEnabled) : current.razorpayEnabled,
       freeShippingThreshold:
         body.freeShippingThreshold !== undefined
           ? Math.max(0, Math.round(Number(body.freeShippingThreshold)))

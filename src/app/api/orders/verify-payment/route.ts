@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { verifyRazorpaySignature } from "@/lib/razorpay";
 import { sendOrderConfirmationEmail } from "@/lib/email";
+import { getStoreSettings } from "@/lib/settings";
 
 export async function POST(req: NextRequest) {
   try {
@@ -32,7 +33,13 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: "Missing Razorpay verification fields." }, { status: 400 });
       }
 
-      const valid = verifyRazorpaySignature(razorpayOrderId, razorpayPaymentId, razorpaySignature);
+      const settings = await getStoreSettings();
+      const valid = verifyRazorpaySignature(
+        razorpayOrderId,
+        razorpayPaymentId,
+        razorpaySignature,
+        settings.razorpayKeySecret
+      );
       if (!valid) {
         await prisma.order.update({
           where: { id: order.id },

@@ -75,6 +75,10 @@ export interface StoreSettings {
   instagramUrl: string;
   upiId?: string;
   upiName?: string;
+  upiEnabled?: boolean;
+  razorpayKeyId?: string | null;
+  razorpayKeySecret?: string | null;
+  razorpayEnabled?: boolean;
   freeShippingThreshold: number;
   shippingFee: number;
 }

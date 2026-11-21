@@ -160,7 +160,7 @@ export async function POST(req: NextRequest) {
 
     let razorpayData: Awaited<ReturnType<typeof createRazorpayOrder>> | null = null;
     if (paymentMethod === "RAZORPAY") {
-      razorpayData = await createRazorpayOrder(total, orderNumber);
+      razorpayData = await createRazorpayOrder(total, orderNumber, settings);
     }
 
     const order = await prisma.order.create({

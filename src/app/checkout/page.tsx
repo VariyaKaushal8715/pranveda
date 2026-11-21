@@ -13,13 +13,9 @@ import {
   MailCheck,
   ArrowRight,
   Lock,
-  QrCode,
-  Copy,
-  Check,
-  ExternalLink,
   Sparkles,
+  AlertCircle,
 } from "lucide-react";
-import QRCode from "qrcode";
 import { useStore } from "@/context/StoreContext";
 import { formatINR } from "@/lib/format";
 import type { OrderData } from "@/types/store";
@@ -50,18 +46,12 @@ function CheckoutContent() {
   );
   const [placing, setPlacing] = useState(false);
 
-  // Dynamic Merchant UPI QR Modal state
-  const [upiModal, setUpiModal] = useState<{
+  // Razorpay Demo Modal state (shown only when keys have not yet been saved in Admin Settings)
+  const [demoModal, setDemoModal] = useState<{
     order: OrderData;
-    upiId: string;
-    upiName: string;
-    amount: number;
-    qrDataUrl: string;
-    upiUri: string;
+    razorpayOrderId: string;
   } | null>(null);
-  const [upiRefInput, setUpiRefInput] = useState("");
-  const [verifyingUpi, setVerifyingUpi] = useState(false);
-  const [copiedUpi, setCopiedUpi] = useState(false);
+  const [verifyingPay, setVerifyingPay] = useState(false);
 
   // Completed Order
   const [confirmedOrder, setConfirmedOrder] = useState<OrderData | null>(null);
@@ -160,112 +150,77 @@ function CheckoutContent() {
       }
 
       // Online payment flow:
-      // If live Razorpay is active, customer can pay via Razorpay SDK.
-      // Otherwise, generate the dynamic Merchant UPI QR with Admin's configured UPI ID and exact order amount!
+      // If live Razorpay credentials are saved in Admin Settings, open real Razorpay checkout!
       if (data.razorpay?.mode === "live") {
         const loaded = await loadRazorpayScript();
-        if (loaded && window.Razorpay) {
-          const rzp = new window.Razorpay({
-            key: data.razorpay.keyId,
-            amount: data.razorpay.amount,
-            currency: data.razorpay.currency,
-            name: settings.storeName,
-            description: `Order #${data.order.orderNumber}`,
-            order_id: data.razorpay.id,
-            prefill: {
-              name: customerName,
-              email: customerEmail,
-              contact: customerPhone,
-            },
-            theme: { color: "#1B3B2B" },
-            handler: async (response: {
-              razorpay_order_id: string;
-              razorpay_payment_id: string;
-              razorpay_signature: string;
-            }) => {
-              const verifyRes = await fetch("/api/orders/verify-payment", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                  orderId: data.order.id,
-                  razorpayOrderId: response.razorpay_order_id,
-                  razorpayPaymentId: response.razorpay_payment_id,
-                  razorpaySignature: response.razorpay_signature,
-                }),
-              });
-              const verifyData = await verifyRes.json();
-              if (verifyRes.ok) {
-                clearCart();
-                setConfirmedOrder(verifyData.order);
-                showToast("Payment successful! Confirmation email sent.", "success");
-              } else {
-                showToast(verifyData.error || "Payment verification failed.", "error");
-              }
-            },
-          });
-          rzp.open();
+        if (!loaded || !window.Razorpay) {
+          showToast("Could not load Razorpay SDK. Please check your internet connection.", "error");
           return;
         }
-      }
-
-      // Dynamic Merchant UPI QR Generation:
-      // Reads admin's configured UPI ID and generates instant QR for the exact order total!
-      const merchantUpi = data.upi?.upiId || settings.upiId || "pranveda@okhdfcbank";
-      const payeeName = data.upi?.upiName || settings.upiName || settings.storeName || "PranVeda Apothecary";
-      const amount = data.order.total;
-      const note = `PranVeda Order #${data.order.orderNumber}`;
-
-      // Standard NPCI UPI URI Scheme
-      const upiUri = `upi://pay?pa=${encodeURIComponent(merchantUpi)}&pn=${encodeURIComponent(payeeName)}&am=${amount.toFixed(2)}&cu=INR&tn=${encodeURIComponent(note)}`;
-
-      let qrDataUrl = "";
-      try {
-        qrDataUrl = await QRCode.toDataURL(upiUri, {
-          width: 320,
-          margin: 1,
-          color: {
-            dark: "#142C20", // Luxury PranVeda Forest Green
-            light: "#FFFFFF",
+        const rzp = new window.Razorpay({
+          key: data.razorpay.keyId,
+          amount: data.razorpay.amount,
+          currency: data.razorpay.currency,
+          name: settings.storeName,
+          description: `Order #${data.order.orderNumber}`,
+          order_id: data.razorpay.id,
+          prefill: {
+            name: customerName,
+            email: customerEmail,
+            contact: customerPhone,
+          },
+          theme: { color: "#142C20" },
+          handler: async (response: {
+            razorpay_order_id: string;
+            razorpay_payment_id: string;
+            razorpay_signature: string;
+          }) => {
+            const verifyRes = await fetch("/api/orders/verify-payment", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                orderId: data.order.id,
+                razorpayOrderId: response.razorpay_order_id,
+                razorpayPaymentId: response.razorpay_payment_id,
+                razorpaySignature: response.razorpay_signature,
+              }),
+            });
+            const verifyData = await verifyRes.json();
+            if (verifyRes.ok) {
+              clearCart();
+              setConfirmedOrder(verifyData.order);
+              showToast("Payment verified! Confirmation email sent.", "success");
+            } else {
+              showToast(verifyData.error || "Payment verification failed.", "error");
+            }
           },
         });
-      } catch (qrErr) {
-        console.error("QR Code generation error:", qrErr);
-        qrDataUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(upiUri)}`;
+        rzp.open();
+        return;
       }
 
-      setUpiModal({
+      // If Razorpay keys have not yet been entered in Admin Settings, show demo simulation modal:
+      setDemoModal({
         order: data.order,
-        upiId: merchantUpi,
-        upiName: payeeName,
-        amount,
-        qrDataUrl,
-        upiUri,
+        razorpayOrderId: data.razorpay.id,
       });
     } finally {
       setPlacing(false);
     }
   };
 
-  const handleCopyUpi = () => {
-    if (!upiModal) return;
-    navigator.clipboard.writeText(upiModal.upiId);
-    setCopiedUpi(true);
-    showToast("UPI ID copied to clipboard!", "success");
-    setTimeout(() => setCopiedUpi(false), 2500);
-  };
-
-  const confirmUpiPayment = async () => {
-    if (!upiModal) return;
-    setVerifyingUpi(true);
+  const completeDemoPayment = async () => {
+    if (!demoModal) return;
+    setVerifyingPay(true);
     try {
       const res = await fetch("/api/orders/verify-payment", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          orderId: upiModal.order.id,
-          isUpiPayment: true,
-          paymentType: "UPI",
-          upiRef: upiRefInput.trim(),
+          orderId: demoModal.order.id,
+          razorpayOrderId: demoModal.razorpayOrderId,
+          razorpayPaymentId: `pay_demo_${Date.now()}`,
+          razorpaySignature: `sig_demo_${Date.now()}`,
         }),
       });
       const data = await res.json();
@@ -273,12 +228,12 @@ function CheckoutContent() {
         showToast(data.error || "Payment verification failed", "error");
         return;
       }
-      setUpiModal(null);
+      setDemoModal(null);
       clearCart();
       setConfirmedOrder(data.order);
-      showToast("Payment verified! Confirmation email sent.", "success");
+      showToast("Demo payment verified! Confirmation email sent.", "success");
     } finally {
-      setVerifyingUpi(false);
+      setVerifyingPay(false);
     }
   };
 
@@ -505,18 +460,18 @@ function CheckoutContent() {
               >
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-1.5 text-forest">
-                    <Smartphone className="w-5 h-5 text-forest" />
-                    <QrCode className="w-4 h-4 text-gold" />
+                    <CreditCard className="w-5 h-5 text-forest" />
+                    <Smartphone className="w-4 h-4 text-gold" />
                   </div>
-                  <span className="text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-gold/25 text-forest">
-                    Instant UPI QR
+                  <span className="text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-gold/25 text-forest">
+                    Automated &amp; Instant
                   </span>
                 </div>
                 <div className="font-bold text-forest text-sm flex items-center gap-1.5">
-                  Direct UPI / Dynamic QR
+                  Pay Online (Razorpay)
                 </div>
                 <p className="text-xs text-muted mt-1 leading-relaxed">
-                  Exact amount QR for GPay, PhonePe, Paytm, BHIM &amp; any UPI app.
+                  UPI (GPay, PhonePe, Paytm), Debit/Credit Cards &amp; NetBanking.
                 </p>
               </button>
 
@@ -640,8 +595,8 @@ function CheckoutContent() {
         </div>
       </form>
 
-      {/* DYNAMIC MERCHANT UPI QR MODAL */}
-      {upiModal && (
+      {/* RAZORPAY TEST / DEMO SIMULATION MODAL (When keys not yet entered in Admin) */}
+      {demoModal && (
         <div className="fixed inset-0 z-50 bg-ink/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto animate-in fade-in duration-200">
           <div className="bg-white rounded-[28px] sm:rounded-[36px] max-w-md w-full overflow-hidden shadow-2xl border border-sand my-auto">
             {/* Modal Header */}
@@ -649,127 +604,69 @@ function CheckoutContent() {
               <div className="flex items-center justify-between">
                 <div>
                   <div className="inline-flex items-center gap-1.5 text-[10px] uppercase tracking-[0.2em] text-gold font-bold">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-                    <span className="w-2 h-2 rounded-full bg-emerald-400" />
-                    Dynamic UPI Payment
+                    <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+                    Demo Gateway Simulator
                   </div>
-                  <h3 className="font-serif text-2xl font-bold mt-0.5">{upiModal.upiName}</h3>
+                  <h3 className="font-serif text-2xl font-bold mt-0.5">{settings.storeName}</h3>
                 </div>
                 <div className="text-right">
-                  <div className="text-[11px] text-cream/70 font-medium">Exact Total</div>
+                  <div className="text-[11px] text-cream/70 font-medium">Order Total</div>
                   <div className="font-sans text-2xl font-extrabold text-gold tabular-nums tracking-tight">
-                    {formatINR(upiModal.amount)}
+                    {formatINR(demoModal.order.total)}
                   </div>
                 </div>
               </div>
             </div>
 
             <div className="p-5 sm:p-6 space-y-4">
-              {/* Dynamic QR Display Card */}
-              <div className="bg-cream/50 rounded-2xl p-4 border border-sand/80 text-center flex flex-col items-center">
-                <div className="relative p-3 bg-white rounded-2xl shadow-md border-2 border-forest/15 inline-block">
-                  <img
-                    src={upiModal.qrDataUrl}
-                    alt="Scan to Pay via UPI"
-                    className="w-56 h-56 sm:w-60 sm:h-60 rounded-lg mx-auto"
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div className="w-10 h-10 rounded-full bg-forest text-gold border-2 border-white shadow-md flex items-center justify-center">
-                      <Sparkles className="w-5 h-5" />
-                    </div>
+              <div className="bg-amber-50 rounded-2xl p-4 border border-amber-200/80">
+                <div className="flex items-start gap-2.5">
+                  <AlertCircle className="w-5 h-5 text-amber-700 shrink-0 mt-0.5" />
+                  <div className="text-xs text-amber-900 leading-relaxed">
+                    <strong className="font-bold text-amber-950 block mb-0.5">Admin Notice: Live Keys Pending</strong>
+                    Your store admin can add live Razorpay <strong>Key ID &amp; Key Secret</strong> anytime in{" "}
+                    <code className="bg-amber-100 px-1 py-0.5 rounded text-[11px] font-mono">/admin/settings</code>.
+                    Once added, real Razorpay checkout (Cards, UPI, NetBanking) will open automatically!
                   </div>
-                </div>
-
-                <div className="mt-3 text-center">
-                  <div className="text-xs font-bold text-forest">
-                    Scan with Any UPI App
-                  </div>
-                  <div className="text-[11px] text-muted mt-0.5">
-                    Amount <span className="font-bold text-forest">{formatINR(upiModal.amount)}</span> &amp; Order <span className="font-bold text-forest">#{upiModal.order.orderNumber}</span> are pre-filled!
-                  </div>
-                </div>
-
-                {/* UPI Apps Icons Pill Bar */}
-                <div className="mt-3 flex flex-wrap items-center justify-center gap-1.5 text-[10px] font-semibold text-forest/80">
-                  <span className="px-2.5 py-1 rounded-full bg-white border border-sand shadow-2xs">Google Pay</span>
-                  <span className="px-2.5 py-1 rounded-full bg-white border border-sand shadow-2xs">PhonePe</span>
-                  <span className="px-2.5 py-1 rounded-full bg-white border border-sand shadow-2xs">Paytm</span>
-                  <span className="px-2.5 py-1 rounded-full bg-white border border-sand shadow-2xs">BHIM</span>
-                  <span className="px-2.5 py-1 rounded-full bg-white border border-sand shadow-2xs">Cred</span>
                 </div>
               </div>
 
-              {/* Direct UPI ID & Copy */}
-              <div className="flex items-center justify-between p-3 rounded-xl bg-linen border border-sand">
-                <div className="min-w-0 pr-2">
-                  <div className="text-[10px] uppercase font-bold text-muted tracking-wider">Merchant UPI ID</div>
-                  <div className="font-mono text-xs sm:text-sm font-bold text-forest truncate">{upiModal.upiId}</div>
+              <div className="bg-cream/60 rounded-2xl p-4 border border-sand space-y-2 text-xs">
+                <div className="flex justify-between text-muted">
+                  <span>Order Number</span>
+                  <span className="font-mono font-bold text-forest">#{demoModal.order.orderNumber}</span>
                 </div>
+                <div className="flex justify-between text-muted">
+                  <span>Razorpay Reference</span>
+                  <span className="font-mono font-semibold text-forest truncate max-w-[200px]">{demoModal.razorpayOrderId}</span>
+                </div>
+                <div className="flex justify-between text-muted">
+                  <span>Recipient Email</span>
+                  <span className="font-medium text-forest truncate max-w-[200px]">{customerEmail}</span>
+                </div>
+              </div>
+
+              <div className="flex flex-col-reverse sm:flex-row gap-2 pt-2">
                 <button
                   type="button"
-                  onClick={handleCopyUpi}
-                  className="px-3 py-1.5 rounded-lg bg-forest text-gold text-xs font-semibold hover:bg-forest-light transition flex items-center gap-1 shrink-0 cursor-pointer shadow-2xs"
-                >
-                  {copiedUpi ? (
-                    <>
-                      <Check className="w-3.5 h-3.5 text-emerald-400" /> Copied
-                    </>
-                  ) : (
-                    <>
-                      <Copy className="w-3.5 h-3.5" /> Copy ID
-                    </>
-                  )}
-                </button>
-              </div>
-
-              {/* Mobile Deep Link Button (Opens UPI App directly on phone) */}
-              <div className="sm:hidden">
-                <a
-                  href={upiModal.upiUri}
-                  className="w-full py-3 px-4 rounded-xl bg-emerald-600 text-white font-bold text-xs flex items-center justify-center gap-2 hover:bg-emerald-700 transition shadow-sm"
-                >
-                  <Smartphone className="w-4 h-4" /> Tap to Pay via UPI App (GPay/PhonePe)
-                  <ExternalLink className="w-3.5 h-3.5 ml-0.5" />
-                </a>
-              </div>
-
-              {/* UTR / Reference ID & Confirmation */}
-              <div className="space-y-2 pt-1 border-t border-sand">
-                <label className="block text-[11px] font-semibold text-forest">
-                  UPI Ref / UTR No. <span className="text-muted font-normal">(Optional 12-digit reference from payment app)</span>
-                </label>
-                <input
-                  type="text"
-                  value={upiRefInput}
-                  onChange={(e) => setUpiRefInput(e.target.value)}
-                  placeholder="e.g. 4123XXXXXXXX"
-                  className="w-full rounded-xl border border-sand bg-cream/50 px-3.5 py-2 text-xs font-mono focus:outline-none focus:border-forest"
-                />
-              </div>
-
-              <div className="flex flex-col-reverse sm:flex-row gap-2 pt-1">
-                <button
-                  type="button"
-                  onClick={() => setUpiModal(null)}
+                  onClick={() => setDemoModal(null)}
                   className="px-4 py-2.5 rounded-full border border-sand text-xs font-semibold text-muted hover:text-forest transition cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="button"
-                  disabled={verifyingUpi}
-                  onClick={confirmUpiPayment}
+                  disabled={verifyingPay}
+                  onClick={completeDemoPayment}
                   className="flex-1 py-3 px-4 rounded-full bg-forest text-gold text-xs sm:text-sm font-bold hover:bg-forest-light disabled:opacity-50 transition shadow-md flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                  {verifyingUpi
-                    ? "Verifying Payment..."
-                    : `I Have Paid ${formatINR(upiModal.amount)}`}
+                  {verifyingPay ? "Processing..." : `Simulate Successful Payment`}
                 </button>
               </div>
 
               <p className="text-[10px] text-center text-muted">
-                🔒 Direct bank transfer to verified merchant UPI. Instant confirmation receipt will be emailed to <strong className="text-forest">{customerEmail}</strong>.
+                🔒 Safe sandbox mode for testing checkout flow and email notifications before going live.
               </p>
             </div>
           </div>

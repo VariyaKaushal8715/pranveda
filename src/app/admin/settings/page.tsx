@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Save, KeyRound } from "lucide-react";
+import { Save, KeyRound, Eye, EyeOff, ShieldCheck } from "lucide-react";
 import { useStore } from "@/context/StoreContext";
 
 export default function AdminSettingsPage() {
@@ -15,9 +15,14 @@ export default function AdminSettingsPage() {
     instagramUrl: "",
     upiId: "pranveda@okhdfcbank",
     upiName: "PranVeda Apothecary",
+    upiEnabled: false,
+    razorpayKeyId: "",
+    razorpayKeySecret: "",
+    razorpayEnabled: true,
     freeShippingThreshold: 499,
     shippingFee: 49,
   });
+  const [showSecret, setShowSecret] = useState(false);
   const [integrations, setIntegrations] = useState({ razorpayLive: false, smtpLive: false });
   const [saving, setSaving] = useState(false);
 
@@ -25,7 +30,16 @@ export default function AdminSettingsPage() {
     fetch("/api/settings")
       .then((r) => r.json())
       .then((d) => {
-        if (d.settings) setForm(d.settings);
+        if (d.settings) {
+          setForm((prev) => ({
+            ...prev,
+            ...d.settings,
+            razorpayKeyId: d.settings.razorpayKeyId || "",
+            razorpayKeySecret: d.settings.razorpayKeySecret || "",
+            razorpayEnabled: d.settings.razorpayEnabled !== false,
+            upiEnabled: Boolean(d.settings.upiEnabled),
+          }));
+        }
         if (d.integrations) setIntegrations(d.integrations);
       });
   }, []);
@@ -125,45 +139,87 @@ export default function AdminSettingsPage() {
           />
         </div>
 
-        {/* UPI Payment Configuration */}
+        {/* Razorpay Online Payment Gateway Configuration */}
         <div className="pt-4 border-t border-sand space-y-4">
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-              <h3 className="text-sm font-bold text-forest uppercase tracking-wider">
-                Direct Merchant UPI &amp; Dynamic QR Gateway
-              </h3>
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <div className="flex items-center gap-2">
+                <span
+                  className={`w-2.5 h-2.5 rounded-full ${
+                    form.razorpayKeyId && form.razorpayKeySecret && form.razorpayEnabled
+                      ? "bg-emerald-500 animate-pulse"
+                      : "bg-amber-400"
+                  }`}
+                />
+                <h3 className="text-sm font-bold text-forest uppercase tracking-wider">
+                  Razorpay Payment Gateway (Instant Automated Verification)
+                </h3>
+              </div>
+              <p className="text-xs text-muted mt-0.5">
+                Enter your Razorpay credentials below. Customer online payments (UPI, GPay, PhonePe, Cards, NetBanking) will be directly credited to your Razorpay account with 100% automated bank verification!
+              </p>
             </div>
-            <p className="text-xs text-muted mt-0.5">
-              Enter your real UPI ID below. When any customer chooses UPI / Online payment at checkout, an instant dynamic QR code will be generated for that <strong>exact order amount</strong> directly to this UPI ID!
-            </p>
+            <label className="flex items-center gap-2 text-xs font-semibold text-forest cursor-pointer select-none">
+              <input
+                type="checkbox"
+                checked={form.razorpayEnabled}
+                onChange={(e) => setForm({ ...form, razorpayEnabled: e.target.checked })}
+                className="w-4 h-4 rounded text-forest focus:ring-forest"
+              />
+              Enable Razorpay
+            </label>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-semibold text-forest mb-1">
-                Merchant UPI ID (e.g. yourname@okhdfcbank, 9876543210@paytm)
+                Razorpay Key ID (e.g. rzp_live_... or rzp_test_...)
               </label>
               <input
-                required
                 type="text"
-                placeholder="e.g. pranveda@okhdfcbank"
-                value={form.upiId}
-                onChange={(e) => setForm({ ...form, upiId: e.target.value.trim() })}
+                placeholder="rzp_live_xxxxxxxxxxxxxxxx"
+                value={form.razorpayKeyId}
+                onChange={(e) => setForm({ ...form, razorpayKeyId: e.target.value.trim() })}
                 className="w-full rounded-xl border border-sand bg-cream/50 px-4 py-2.5 text-sm font-mono focus:outline-none focus:border-forest"
               />
             </div>
             <div>
               <label className="block text-xs font-semibold text-forest mb-1">
-                Payee / Business Name (Shown on GPay/PhonePe)
+                Razorpay Key Secret
               </label>
-              <input
-                type="text"
-                placeholder="e.g. PranVeda Apothecary"
-                value={form.upiName}
-                onChange={(e) => setForm({ ...form, upiName: e.target.value })}
-                className="w-full rounded-xl border border-sand bg-cream/50 px-4 py-2.5 text-sm focus:outline-none focus:border-forest"
-              />
+              <div className="relative">
+                <input
+                  type={showSecret ? "text" : "password"}
+                  placeholder="Enter your Razorpay Key Secret"
+                  value={form.razorpayKeySecret}
+                  onChange={(e) => setForm({ ...form, razorpayKeySecret: e.target.value.trim() })}
+                  className="w-full rounded-xl border border-sand bg-cream/50 px-4 py-2.5 pr-10 text-sm font-mono focus:outline-none focus:border-forest"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowSecret(!showSecret)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-forest transition"
+                  aria-label="Toggle secret visibility"
+                >
+                  {showSecret ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div className="p-3.5 rounded-2xl bg-linen border border-sand/80 text-[11px] text-muted flex items-start gap-2">
+            <KeyRound className="w-4 h-4 text-gold shrink-0 mt-0.5" />
+            <div>
+              <strong>Where to find your Razorpay API Keys?</strong> Log in to your{" "}
+              <a
+                href="https://dashboard.razorpay.com/app/keys"
+                target="_blank"
+                rel="noreferrer"
+                className="text-forest font-bold underline"
+              >
+                Razorpay Dashboard → Settings → API Keys
+              </a>
+              , click &quot;Generate Key&quot;, and paste your Key ID and Key Secret here. Instant live activation without touching code or redeploying!
             </div>
           </div>
         </div>
