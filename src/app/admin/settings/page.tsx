@@ -13,6 +13,8 @@ export default function AdminSettingsPage() {
     supportEmail: "care@pranveda.in",
     address: "",
     instagramUrl: "",
+    upiId: "pranveda@okhdfcbank",
+    upiName: "PranVeda Apothecary",
     freeShippingThreshold: 499,
     shippingFee: 49,
   });
@@ -121,6 +123,49 @@ export default function AdminSettingsPage() {
             onChange={(e) => setForm({ ...form, instagramUrl: e.target.value })}
             className="w-full rounded-xl border border-sand bg-cream/50 px-4 py-2.5 text-sm"
           />
+        </div>
+
+        {/* UPI Payment Configuration */}
+        <div className="pt-4 border-t border-sand space-y-4">
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+              <h3 className="text-sm font-bold text-forest uppercase tracking-wider">
+                Direct Merchant UPI &amp; Dynamic QR Gateway
+              </h3>
+            </div>
+            <p className="text-xs text-muted mt-0.5">
+              Enter your real UPI ID below. When any customer chooses UPI / Online payment at checkout, an instant dynamic QR code will be generated for that <strong>exact order amount</strong> directly to this UPI ID!
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-semibold text-forest mb-1">
+                Merchant UPI ID (e.g. yourname@okhdfcbank, 9876543210@paytm)
+              </label>
+              <input
+                required
+                type="text"
+                placeholder="e.g. pranveda@okhdfcbank"
+                value={form.upiId}
+                onChange={(e) => setForm({ ...form, upiId: e.target.value.trim() })}
+                className="w-full rounded-xl border border-sand bg-cream/50 px-4 py-2.5 text-sm font-mono focus:outline-none focus:border-forest"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-forest mb-1">
+                Payee / Business Name (Shown on GPay/PhonePe)
+              </label>
+              <input
+                type="text"
+                placeholder="e.g. PranVeda Apothecary"
+                value={form.upiName}
+                onChange={(e) => setForm({ ...form, upiName: e.target.value })}
+                className="w-full rounded-xl border border-sand bg-cream/50 px-4 py-2.5 text-sm focus:outline-none focus:border-forest"
+              />
+            </div>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-sand">

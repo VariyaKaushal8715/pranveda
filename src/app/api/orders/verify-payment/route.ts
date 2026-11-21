@@ -7,12 +7,11 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const orderId = String(body.orderId || "");
-    const razorpayOrderId = String(body.razorpayOrderId || "");
-    const razorpayPaymentId = String(body.razorpayPaymentId || "");
-    const razorpaySignature = String(body.razorpaySignature || "");
+    const isUpi = body.isUpiPayment === true || body.paymentType === "UPI";
+    const upiRef = String(body.upiRef || body.razorpayPaymentId || "").trim();
 
-    if (!orderId || !razorpayOrderId || !razorpayPaymentId || !razorpaySignature) {
-      return NextResponse.json({ error: "Missing payment verification fields." }, { status: 400 });
+    if (!orderId) {
+      return NextResponse.json({ error: "Missing order ID." }, { status: 400 });
     }
 
     const order = await prisma.order.findUnique({
@@ -24,13 +23,23 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Order not found." }, { status: 404 });
     }
 
-    const valid = verifyRazorpaySignature(razorpayOrderId, razorpayPaymentId, razorpaySignature);
-    if (!valid) {
-      await prisma.order.update({
-        where: { id: order.id },
-        data: { paymentStatus: "FAILED" },
-      });
-      return NextResponse.json({ error: "Payment signature verification failed." }, { status: 400 });
+    if (!isUpi) {
+      const razorpayOrderId = String(body.razorpayOrderId || "");
+      const razorpayPaymentId = String(body.razorpayPaymentId || "");
+      const razorpaySignature = String(body.razorpaySignature || "");
+
+      if (!razorpayOrderId || !razorpayPaymentId || !razorpaySignature) {
+        return NextResponse.json({ error: "Missing Razorpay verification fields." }, { status: 400 });
+      }
+
+      const valid = verifyRazorpaySignature(razorpayOrderId, razorpayPaymentId, razorpaySignature);
+      if (!valid) {
+        await prisma.order.update({
+          where: { id: order.id },
+          data: { paymentStatus: "FAILED" },
+        });
+        return NextResponse.json({ error: "Payment signature verification failed." }, { status: 400 });
+      }
     }
 
     const alreadyPaid = order.paymentStatus === "PAID";
@@ -38,7 +47,9 @@ export async function POST(req: NextRequest) {
       where: { id: order.id },
       data: {
         paymentStatus: "PAID",
-        razorpayPaymentId,
+        razorpayPaymentId: isUpi
+          ? (upiRef ? `upi_${upiRef}` : `upi_qr_${Date.now()}`)
+          : body.razorpayPaymentId,
       },
       include: { items: true },
     });

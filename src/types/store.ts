@@ -73,6 +73,8 @@ export interface StoreSettings {
   supportEmail: string;
   address: string;
   instagramUrl: string;
+  upiId?: string;
+  upiName?: string;
   freeShippingThreshold: number;
   shippingFee: number;
 }

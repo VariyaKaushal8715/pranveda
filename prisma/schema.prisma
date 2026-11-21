@@ -152,6 +152,8 @@ model StoreSetting {
   supportEmail          String   @default("care@pranveda.in")
   address               String   @default("104 Botanical Arcade, SG Highway, Ahmedabad, Gujarat 380054")
   instagramUrl          String   @default("https://instagram.com/pranveda.ayurveda")
+  upiId                 String   @default("pranveda@okhdfcbank")
+  upiName               String   @default("PranVeda Apothecary")
   freeShippingThreshold Int      @default(499)
   shippingFee           Int      @default(49)
   updatedAt             DateTime @updatedAt

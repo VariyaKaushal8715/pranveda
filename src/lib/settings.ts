@@ -15,6 +15,8 @@ export async function getStoreSettings() {
         supportEmail: "care@pranveda.in",
         address: "104 Botanical Arcade, SG Highway, Ahmedabad, Gujarat 380054",
         instagramUrl: "https://instagram.com/pranveda.ayurveda",
+        upiId: "pranveda@okhdfcbank",
+        upiName: "PranVeda Apothecary",
         freeShippingThreshold: 499,
         shippingFee: 49,
       },

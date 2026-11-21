@@ -231,6 +231,10 @@ export async function POST(req: NextRequest) {
       {
         order,
         razorpay: razorpayData,
+        upi: {
+          upiId: settings.upiId || "pranveda@okhdfcbank",
+          upiName: settings.upiName || settings.storeName || "PranVeda Apothecary",
+        },
       },
       { status: 201 }
     );

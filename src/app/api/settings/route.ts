@@ -39,6 +39,8 @@ export async function PATCH(req: NextRequest) {
       address: body.address !== undefined ? String(body.address).trim() : current.address,
       instagramUrl:
         body.instagramUrl !== undefined ? String(body.instagramUrl).trim() : current.instagramUrl,
+      upiId: body.upiId !== undefined ? String(body.upiId).trim() : current.upiId,
+      upiName: body.upiName !== undefined ? String(body.upiName).trim() : current.upiName,
       freeShippingThreshold:
         body.freeShippingThreshold !== undefined
           ? Math.max(0, Math.round(Number(body.freeShippingThreshold)))
