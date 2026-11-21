@@ -13,6 +13,7 @@ import {
 import type { Category, Product } from "@/types/store";
 import { formatINR, HEALTH_CONCERNS } from "@/lib/format";
 import { useStore } from "@/context/StoreContext";
+import { AdminVerifyModal } from "@/components/admin/AdminVerifyModal";
 
 const EMPTY_FORM = {
   id: "",
@@ -45,6 +46,12 @@ export default function AdminProductsPage() {
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [customImageUrl, setCustomImageUrl] = useState("");
+  const [verifyModal, setVerifyModal] = useState<{
+    action: () => Promise<void>;
+    title: string;
+    description: string;
+    buttonText: string;
+  } | null>(null);
 
   const loadAll = async () => {
     setLoading(true);
@@ -143,8 +150,7 @@ export default function AdminProductsPage() {
     }));
   };
 
-  const handleSave = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const executeSave = async () => {
     setSaving(true);
     try {
       const isEdit = Boolean(form.id);
@@ -170,13 +176,35 @@ export default function AdminProductsPage() {
     }
   };
 
-  const handleDelete = async (p: Product) => {
-    if (!confirm(`Delete "${p.name}" permanently from your store?`)) return;
-    const res = await fetch(`/api/products/${p.id}`, { method: "DELETE" });
-    if (res.ok) {
-      showToast("Product deleted.", "info");
-      await loadAll();
+  const handlePreSave = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.name.trim()) {
+      showToast("Please enter a product name.", "error");
+      return;
     }
+    setVerifyModal({
+      action: executeSave,
+      title: form.id ? "Authorize Product Update" : "Authorize New Product",
+      description: `Enter your Admin Password to authorize saving changes for "${form.name}".`,
+      buttonText: form.id ? "Authorize & Update" : "Authorize & Create",
+    });
+  };
+
+  const handleDelete = (p: Product) => {
+    setVerifyModal({
+      action: async () => {
+        const res = await fetch(`/api/products/${p.id}`, { method: "DELETE" });
+        if (res.ok) {
+          showToast(`"${p.name}" deleted.`, "info");
+          await loadAll();
+        } else {
+          showToast("Failed to delete product.", "error");
+        }
+      },
+      title: "Authorize Product Deletion",
+      description: `Permanent deletion: Enter your Admin Password to authorize deleting "${p.name}".`,
+      buttonText: "Authorize & Delete",
+    });
   };
 
   return (
@@ -292,7 +320,7 @@ export default function AdminProductsPage() {
               </button>
             </div>
 
-            <form onSubmit={handleSave} className="p-6 space-y-5">
+            <form onSubmit={handlePreSave} className="p-6 space-y-5">
               {/* Photo Upload Section */}
               <div className="p-5 rounded-2xl bg-cream border border-sand space-y-3">
                 <label className="text-xs font-bold uppercase tracking-wider text-forest flex items-center gap-1.5">
@@ -558,6 +586,20 @@ export default function AdminProductsPage() {
             </form>
           </div>
         </div>
+      )}
+
+      {/* Admin Real Security Verification Modal */}
+      {verifyModal && (
+        <AdminVerifyModal
+          isOpen={Boolean(verifyModal)}
+          title={verifyModal.title}
+          description={verifyModal.description}
+          actionButtonText={verifyModal.buttonText}
+          onClose={() => setVerifyModal(null)}
+          onVerified={async () => {
+            await verifyModal.action();
+          }}
+        />
       )}
     </div>
   );

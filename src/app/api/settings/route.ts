@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
-import { requireAdmin } from "@/lib/auth";
+import { requireAdmin, verifyAdminPassword } from "@/lib/auth";
 import { getStoreSettings } from "@/lib/settings";
 import { isRazorpayConfigured } from "@/lib/razorpay";
 import { isSmtpConfigured } from "@/lib/email";
@@ -23,6 +23,24 @@ export async function PATCH(req: NextRequest) {
   }
 
   const body = await req.json();
+
+  // Strict Admin Password Verification: Protect sensitive store and payment configurations
+  const adminPassword = String(body.adminPassword || "").trim();
+  if (!adminPassword) {
+    return NextResponse.json(
+      { error: "Admin password verification is required to authorize changes." },
+      { status: 400 }
+    );
+  }
+
+  const isAuthorized = await verifyAdminPassword(admin.id, adminPassword);
+  if (!isAuthorized) {
+    return NextResponse.json(
+      { error: "Incorrect admin password. Security verification failed." },
+      { status: 401 }
+    );
+  }
+
   const current = await getStoreSettings();
 
   const updated = await prisma.storeSetting.update({

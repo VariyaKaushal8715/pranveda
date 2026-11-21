@@ -1,5 +1,6 @@
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
+import bcrypt from "bcryptjs";
 import { prisma } from "./db";
 
 const COOKIE_NAME = "pranveda_session";
@@ -98,4 +99,14 @@ export async function requireAdmin() {
     return null;
   }
   return user;
+}
+
+export async function verifyAdminPassword(userId: string, passwordInput: string): Promise<boolean> {
+  if (!passwordInput || !passwordInput.trim()) return false;
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { passwordHash: true, role: true },
+  });
+  if (!user || user.role !== "ADMIN") return false;
+  return bcrypt.compare(passwordInput.trim(), user.passwordHash);
 }

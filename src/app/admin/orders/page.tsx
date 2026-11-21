@@ -1,10 +1,11 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { MailCheck, Save } from "lucide-react";
+import { MailCheck, Save, ShieldCheck } from "lucide-react";
 import type { OrderData } from "@/types/store";
 import { formatINR } from "@/lib/format";
 import { useStore } from "@/context/StoreContext";
+import { AdminVerifyModal } from "@/components/admin/AdminVerifyModal";
 
 const STATUSES = ["PLACED", "PACKED", "SHIPPED", "DELIVERED", "CANCELLED"];
 const PAYMENT_STATUSES = ["PENDING", "PAID", "FAILED"];
@@ -17,6 +18,12 @@ export default function AdminOrdersPage() {
     Record<string, { orderStatus: string; paymentStatus: string; trackingNote: string }>
   >({});
   const [savingId, setSavingId] = useState<string | null>(null);
+  const [verifyModal, setVerifyModal] = useState<{
+    action: () => Promise<void>;
+    title: string;
+    description: string;
+    buttonText: string;
+  } | null>(null);
 
   const loadOrders = async () => {
     setLoading(true);
@@ -45,7 +52,7 @@ export default function AdminOrdersPage() {
     loadOrders();
   }, []);
 
-  const saveOrder = async (orderId: string) => {
+  const executeSaveOrder = async (orderId: string) => {
     const state = edits[orderId];
     if (!state) return;
     setSavingId(orderId);
@@ -67,6 +74,58 @@ export default function AdminOrdersPage() {
     } finally {
       setSavingId(null);
     }
+  };
+
+  const promptSaveOrder = (orderId: string, orderNumber: string) => {
+    setVerifyModal({
+      action: async () => {
+        await executeSaveOrder(orderId);
+      },
+      title: `Authorize Order #${orderNumber} Update`,
+      description: `Enter your Admin Password to authorize updating status and tracking for Order #${orderNumber}.`,
+      buttonText: "Authorize & Update Order",
+    });
+  };
+
+  const promptApprovePayment = (order: OrderData) => {
+    setVerifyModal({
+      action: async () => {
+        const edit = edits[order.id] || {
+          orderStatus: order.orderStatus,
+          paymentStatus: order.paymentStatus,
+          trackingNote: order.trackingNote || "",
+        };
+        const newEdits = {
+          ...edits,
+          [order.id]: { ...edit, paymentStatus: "PAID" },
+        };
+        setEdits(newEdits);
+        setSavingId(order.id);
+        try {
+          const res = await fetch(`/api/orders/${order.id}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              orderStatus: edit.orderStatus,
+              paymentStatus: "PAID",
+              trackingNote: edit.trackingNote,
+              notifyCustomer: true,
+            }),
+          });
+          if (res.ok) {
+            showToast(`Order #${order.orderNumber} payment verified & approved!`, "success");
+            await loadOrders();
+          } else {
+            showToast("Failed to approve payment.", "error");
+          }
+        } finally {
+          setSavingId(null);
+        }
+      },
+      title: "Authorize Payment Approval",
+      description: `Enter your Admin Password to verify and approve payment for Order #${order.orderNumber}.`,
+      buttonText: "Authorize & Approve Payment",
+    });
   };
 
   return (
@@ -128,32 +187,7 @@ export default function AdminOrdersPage() {
                         {order.paymentStatus !== "PAID" && (
                           <button
                             type="button"
-                            onClick={async () => {
-                              const newEdits = {
-                                ...edits,
-                                [order.id]: { ...edit, paymentStatus: "PAID" },
-                              };
-                              setEdits(newEdits);
-                              setSavingId(order.id);
-                              try {
-                                const res = await fetch("/api/admin/orders", {
-                                  method: "PATCH",
-                                  headers: { "Content-Type": "application/json" },
-                                  body: JSON.stringify({
-                                    orderId: order.id,
-                                    orderStatus: edit.orderStatus,
-                                    paymentStatus: "PAID",
-                                    trackingNote: edit.trackingNote,
-                                  }),
-                                });
-                                if (res.ok) {
-                                  showToast(`Order #${order.orderNumber} payment verified & marked PAID!`, "success");
-                                  loadOrders();
-                                }
-                              } finally {
-                                setSavingId(null);
-                              }
-                            }}
+                            onClick={() => promptApprovePayment(order)}
                             className="px-2.5 py-1 rounded-lg bg-[#1F6E43] text-white text-[11px] font-bold hover:bg-[#185936] transition cursor-pointer shadow-2xs"
                           >
                             ✓ Verify &amp; Approve Payment
@@ -271,7 +305,7 @@ export default function AdminOrdersPage() {
                   <div className="md:col-span-3">
                     <button
                       disabled={savingId === order.id}
-                      onClick={() => saveOrder(order.id)}
+                      onClick={() => promptSaveOrder(order.id, order.orderNumber)}
                       className="w-full py-2.5 px-4 rounded-full bg-forest text-cream text-xs font-bold hover:bg-forest-light disabled:opacity-50 transition inline-flex items-center justify-center gap-1.5 cursor-pointer"
                     >
                       {savingId === order.id ? (
@@ -289,6 +323,20 @@ export default function AdminOrdersPage() {
             );
           })}
         </div>
+      )}
+
+      {/* Admin Real Security Verification Modal */}
+      {verifyModal && (
+        <AdminVerifyModal
+          isOpen={Boolean(verifyModal)}
+          title={verifyModal.title}
+          description={verifyModal.description}
+          actionButtonText={verifyModal.buttonText}
+          onClose={() => setVerifyModal(null)}
+          onVerified={async () => {
+            await verifyModal.action();
+          }}
+        />
       )}
     </div>
   );

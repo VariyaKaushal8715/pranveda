@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Plus, Trash2, Tag } from "lucide-react";
 import { useStore } from "@/context/StoreContext";
 import { formatINR } from "@/lib/format";
+import { AdminVerifyModal } from "@/components/admin/AdminVerifyModal";
 
 interface CouponItem {
   id: string;
@@ -27,6 +28,12 @@ export default function AdminCouponsPage() {
   const [minOrderAmount, setMinOrderAmount] = useState(0);
   const [maxDiscount, setMaxDiscount] = useState("");
   const [creating, setCreating] = useState(false);
+  const [verifyModal, setVerifyModal] = useState<{
+    action: () => Promise<void>;
+    title: string;
+    description: string;
+    buttonText: string;
+  } | null>(null);
 
   const loadCoupons = async () => {
     setLoading(true);
@@ -43,33 +50,46 @@ export default function AdminCouponsPage() {
     loadCoupons();
   }, []);
 
-  const createCoupon = async (e: React.FormEvent) => {
+  const handlePreCreate = (e: React.FormEvent) => {
     e.preventDefault();
-    setCreating(true);
-    try {
-      const res = await fetch("/api/coupons", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          code: code.trim().toUpperCase(),
-          discountType,
-          discountValue,
-          minOrderAmount,
-          maxDiscount: maxDiscount ? Number(maxDiscount) : null,
-        }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        showToast(data.error || "Failed to create coupon", "error");
-        return;
-      }
-      showToast(`Coupon ${data.coupon.code} created!`, "success");
-      setCode("");
-      setMaxDiscount("");
-      await loadCoupons();
-    } finally {
-      setCreating(false);
+    const cleanCode = code.trim().toUpperCase();
+    if (!cleanCode) {
+      showToast("Please enter a coupon code.", "error");
+      return;
     }
+
+    setVerifyModal({
+      action: async () => {
+        setCreating(true);
+        try {
+          const res = await fetch("/api/coupons", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              code: cleanCode,
+              discountType,
+              discountValue,
+              minOrderAmount,
+              maxDiscount: maxDiscount ? Number(maxDiscount) : null,
+            }),
+          });
+          const data = await res.json();
+          if (!res.ok) {
+            showToast(data.error || "Failed to create coupon", "error");
+            return;
+          }
+          showToast(`Coupon ${data.coupon.code} created!`, "success");
+          setCode("");
+          setMaxDiscount("");
+          await loadCoupons();
+        } finally {
+          setCreating(false);
+        }
+      },
+      title: "Authorize New Coupon",
+      description: `Enter your Admin Password to authorize creating promo coupon "${cleanCode}".`,
+      buttonText: "Authorize & Create Coupon",
+    });
   };
 
   const toggleActive = async (c: CouponItem) => {
@@ -84,13 +104,21 @@ export default function AdminCouponsPage() {
     }
   };
 
-  const removeCoupon = async (c: CouponItem) => {
-    if (!confirm(`Delete coupon ${c.code}?`)) return;
-    const res = await fetch(`/api/coupons/${c.id}`, { method: "DELETE" });
-    if (res.ok) {
-      showToast("Coupon deleted", "info");
-      await loadCoupons();
-    }
+  const removeCoupon = (c: CouponItem) => {
+    setVerifyModal({
+      action: async () => {
+        const res = await fetch(`/api/coupons/${c.id}`, { method: "DELETE" });
+        if (res.ok) {
+          showToast(`Coupon ${c.code} deleted.`, "info");
+          await loadCoupons();
+        } else {
+          showToast("Failed to delete coupon.", "error");
+        }
+      },
+      title: "Authorize Coupon Deletion",
+      description: `Enter your Admin Password to authorize permanently deleting coupon "${c.code}".`,
+      buttonText: "Authorize & Delete Coupon",
+    });
   };
 
   return (
@@ -102,7 +130,7 @@ export default function AdminCouponsPage() {
 
       {/* Create form */}
       <form
-        onSubmit={createCoupon}
+        onSubmit={handlePreCreate}
         className="bg-white rounded-3xl border border-sand p-6 shadow-xs space-y-4"
       >
         <h2 className="font-serif text-2xl font-bold text-forest flex items-center gap-2">
@@ -232,6 +260,20 @@ export default function AdminCouponsPage() {
           </div>
         )}
       </div>
+
+      {/* Admin Real Security Verification Modal */}
+      {verifyModal && (
+        <AdminVerifyModal
+          isOpen={Boolean(verifyModal)}
+          title={verifyModal.title}
+          description={verifyModal.description}
+          actionButtonText={verifyModal.buttonText}
+          onClose={() => setVerifyModal(null)}
+          onVerified={async () => {
+            await verifyModal.action();
+          }}
+        />
+      )}
     </div>
   );
 }

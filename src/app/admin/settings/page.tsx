@@ -1,8 +1,9 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Save, KeyRound, Eye, EyeOff, ShieldCheck } from "lucide-react";
+import { Save, KeyRound, Eye, EyeOff, ShieldCheck, Lock, ShieldAlert, CheckCircle2 } from "lucide-react";
 import { useStore } from "@/context/StoreContext";
+import { AdminVerifyModal } from "@/components/admin/AdminVerifyModal";
 
 export default function AdminSettingsPage() {
   const { refreshSettings, showToast } = useStore();
@@ -25,6 +26,15 @@ export default function AdminSettingsPage() {
   const [showSecret, setShowSecret] = useState(false);
   const [integrations, setIntegrations] = useState({ razorpayLive: false, smtpLive: false });
   const [saving, setSaving] = useState(false);
+  const [verifyModalOpen, setVerifyModalOpen] = useState(false);
+
+  // Change Password state
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showCurrentPass, setShowCurrentPass] = useState(false);
+  const [showNewPass, setShowNewPass] = useState(false);
+  const [changingPass, setChangingPass] = useState(false);
 
   useEffect(() => {
     fetch("/api/settings")
@@ -44,23 +54,63 @@ export default function AdminSettingsPage() {
       });
   }, []);
 
-  const handleSave = async (e: React.FormEvent) => {
+  const handlePreSave = (e: React.FormEvent) => {
     e.preventDefault();
+    setVerifyModalOpen(true);
+  };
+
+  const handleAuthorizedSave = async (verifiedPassword: string) => {
     setSaving(true);
     try {
       const res = await fetch("/api/settings", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({
+          ...form,
+          adminPassword: verifiedPassword,
+        }),
       });
-      if (res.ok) {
-        await refreshSettings();
-        showToast("Store settings saved across your storefront!", "success");
-      } else {
-        showToast("Failed to save settings", "error");
+      const data = await res.json();
+      if (!res.ok) {
+        showToast(data.error || "Failed to save settings", "error");
+        return;
       }
+      await refreshSettings();
+      showToast("Store settings verified & saved across your storefront!", "success");
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleChangePassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (newPassword !== confirmPassword) {
+      showToast("New passwords do not match.", "error");
+      return;
+    }
+    if (newPassword.length < 6) {
+      showToast("New password must be at least 6 characters long.", "error");
+      return;
+    }
+
+    setChangingPass(true);
+    try {
+      const res = await fetch("/api/admin/change-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ currentPassword, newPassword }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        showToast(data.error || "Password change failed.", "error");
+        return;
+      }
+      showToast("Admin password successfully updated!", "success");
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+    } finally {
+      setChangingPass(false);
     }
   };
 
@@ -75,7 +125,7 @@ export default function AdminSettingsPage() {
       </div>
 
       <form
-        onSubmit={handleSave}
+        onSubmit={handlePreSave}
         className="bg-white rounded-3xl border border-sand p-6 sm:p-8 shadow-xs space-y-5"
       >
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -256,11 +306,106 @@ export default function AdminSettingsPage() {
         <button
           type="submit"
           disabled={saving}
-          className="inline-flex items-center gap-2 px-7 py-3 rounded-full bg-forest text-cream text-sm font-bold hover:bg-forest-light disabled:opacity-50 transition cursor-pointer"
+          className="inline-flex items-center gap-2 px-7 py-3 rounded-full bg-forest text-cream text-sm font-bold hover:bg-forest-light disabled:opacity-50 transition cursor-pointer shadow-md"
         >
-          <Save className="w-4 h-4 text-gold" /> {saving ? "Saving..." : "Save Store Settings"}
+          <Save className="w-4 h-4 text-gold" /> {saving ? "Saving..." : "Verify & Save Store Settings"}
         </button>
       </form>
+
+      {/* Admin Security & Password Change Card */}
+      <div className="bg-white rounded-3xl border border-sand p-6 sm:p-8 shadow-xs space-y-5">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-full bg-forest text-gold flex items-center justify-center shrink-0">
+            <Lock className="w-5 h-5" />
+          </div>
+          <div>
+            <div className="text-[10px] uppercase tracking-wider font-bold text-gold">Security Credentials</div>
+            <h2 className="font-serif text-2xl font-bold text-forest">Change Admin Password</h2>
+          </div>
+        </div>
+        <p className="text-xs text-muted leading-relaxed">
+          Update your administrator password. Real verification requires authenticating your current password with the database before committing the new password.
+        </p>
+
+        <form onSubmit={handleChangePassword} className="space-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div>
+              <label className="block text-xs font-semibold text-forest mb-1">Current Password</label>
+              <div className="relative">
+                <input
+                  required
+                  type={showCurrentPass ? "text" : "password"}
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                  placeholder="Enter current password"
+                  className="w-full rounded-xl border border-sand bg-cream/50 px-4 py-2.5 pr-10 text-sm font-mono focus:outline-none focus:border-forest"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowCurrentPass(!showCurrentPass)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-forest transition"
+                  aria-label="Toggle current password visibility"
+                >
+                  {showCurrentPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-forest mb-1">New Password</label>
+              <div className="relative">
+                <input
+                  required
+                  type={showNewPass ? "text" : "password"}
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  placeholder="Min 6 characters"
+                  className="w-full rounded-xl border border-sand bg-cream/50 px-4 py-2.5 pr-10 text-sm font-mono focus:outline-none focus:border-forest"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowNewPass(!showNewPass)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-forest transition"
+                  aria-label="Toggle new password visibility"
+                >
+                  {showNewPass ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-semibold text-forest mb-1">Confirm New Password</label>
+              <input
+                required
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="Confirm new password"
+                className="w-full rounded-xl border border-sand bg-cream/50 px-4 py-2.5 text-sm font-mono focus:outline-none focus:border-forest"
+              />
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            disabled={changingPass}
+            className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-forest text-gold text-xs font-bold hover:bg-forest-light disabled:opacity-50 transition cursor-pointer shadow-sm"
+          >
+            <ShieldCheck className="w-4 h-4 text-emerald-400" />
+            {changingPass ? "Updating Password..." : "Update Admin Password"}
+          </button>
+        </form>
+      </div>
+
+      {/* Admin Verification Modal */}
+      <AdminVerifyModal
+        isOpen={verifyModalOpen}
+        title="Authorize Store & Payment Configuration"
+        description="To commit changes to your store settings and Razorpay credentials, please enter your Admin Password to authorize."
+        actionButtonText="Authorize & Save Settings"
+        onClose={() => setVerifyModalOpen(false)}
+        onVerified={handleAuthorizedSave}
+      />
 
       {/* Go-Live Credentials Guide */}
       <div className="bg-forest text-cream rounded-3xl p-6 sm:p-8 border border-gold/30 space-y-4">
